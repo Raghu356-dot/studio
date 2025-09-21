@@ -45,10 +45,16 @@ const prompt = ai.definePrompt({
 
   URL to Analyze: {{{url}}}
 
-  Based on the URL's structure, domain, and any other relevant factors, determine if it is malicious.
-  - If it is malicious, set isMalicious to true and specify the threatType (e.g., "Phishing", "Malware", "Scam").
-  - If it is safe, set isMalicious to false and set the threatType to "Benign".
-  - Provide a concise summary explaining your reasoning.`,
+  Carefully examine the URL for the following red flags:
+  1.  **Misleading Subdomains:** Look for brand names in the subdomain (e.g., 'paypal.secure-login.com' instead of 'paypal.com').
+  2.  **Suspicious TLDs:** Pay attention to TLDs often associated with spam or malware (e.g., .xyz, .club, .top, .site).
+  3.  **Character Substitution:** Check for common character impersonations (e.g., 'g00gle.com' instead of 'google.com', or using 'l' for 'i').
+  4.  **Excessively Long URLs or Unusual Paths:** Long, complex URLs with random characters can be a sign of a malicious site.
+
+  Based on your analysis:
+  - If you find strong indicators of malicious intent, set isMalicious to true and specify the threatType (e.g., "Phishing", "Malware", "Scam").
+  - If the URL appears safe, set isMalicious to false and set the threatType to "Benign".
+  - Provide a concise summary explaining your reasoning, referencing the specific red flags you identified (or lack thereof).`,
 });
 
 const scanUrlForThreatsFlow = ai.defineFlow(
