@@ -1,0 +1,158 @@
+'use client';
+
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { Slider } from '@/components/ui/slider';
+import { useToast } from '@/hooks/use-toast';
+import { analyzeFraudAction } from '@/app/analysis/actions';
+import { type EnhanceFraudAlertOutput } from '@/ai/flows/enhance-fraud-alerts-with-explanations';
+import { Loader2, ShieldAlert } from 'lucide-react';
+import { Badge } from '../ui/badge';
+
+const formSchema = z.object({
+  transactionDetails: z.string().min(10, 'Please provide more transaction details.'),
+  userProfile: z.string().min(10, 'Please provide more user profile information.'),
+  anomalyScore: z.number().min(0).max(100),
+});
+
+export function FraudDetection() {
+  const [result, setResult] = useState<EnhanceFraudAlertOutput | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      transactionDetails: '',
+      userProfile: '',
+      anomalyScore: 50,
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setResult(null);
+
+    const response = await analyzeFraudAction(
+      values.transactionDetails,
+      values.userProfile,
+      values.anomalyScore
+    );
+
+    if (response.success && response.data) {
+      setResult(response.data);
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Analysis Failed',
+        description: response.error,
+      });
+    }
+
+    setIsLoading(false);
+  }
+  
+  const riskLevelStyles = {
+    high: 'bg-red-500/20 text-red-400 border-red-500/30',
+    medium: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+    low: 'bg-green-500/20 text-green-400 border-green-500/30',
+  };
+
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Fraud Detection</CardTitle>
+        <CardDescription>
+          Analyze transaction details and user behavior to flag fraudulent activity.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="transactionDetails"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Transaction Details</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., Amount: $1,250.00, Merchant: ShadyStore.com, Time: 2023-10-27 03:15 UTC" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="userProfile"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>User Profile</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., New user, first transaction. Location: Different from usual. Device: Unknown." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="anomalyScore"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Anomaly Score: {field.value}</FormLabel>
+                  <FormControl>
+                    <Slider
+                      min={0}
+                      max={100}
+                      step={1}
+                      defaultValue={[field.value]}
+                      onValueChange={(value) => field.onChange(value[0])}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (
+                &lt;&gt;
+                  &lt;Loader2 className="mr-2 h-4 w-4 animate-spin" /&gt;
+                  Analyzing...
+                &lt;/&gt;
+              ) : (
+                'Analyze Transaction'
+              )}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+      {result &amp;&amp; (
+        &lt;CardFooter&gt;
+          &lt;Card className="w-full bg-muted/50"&gt;
+            &lt;CardHeader&gt;
+              &lt;CardTitle className="flex items-center justify-between"&gt;
+                &lt;div className="flex items-center gap-2"&gt;
+                  &lt;ShieldAlert className="h-5 w-5 text-accent" /&gt;
+                  Fraud Alert Details
+                &lt;/div&gt;
+                 &lt;Badge variant="outline" className={riskLevelStyles[result.riskLevel.toLowerCase() as keyof typeof riskLevelStyles] || ''}&gt;
+                  Risk: {result.riskLevel}
+                &lt;/Badge&gt;
+              &lt;/CardTitle&gt;
+            &lt;/CardHeader&gt;
+            &lt;CardContent&gt;
+              &lt;p className="text-sm"&gt;{result.explanation}&lt;/p&gt;
+            &lt;/CardContent&gt;
+          &lt;/Card&gt;
+        &lt;/CardFooter&gt;
+      )}
+    &lt;/Card&gt;
+  );
+}

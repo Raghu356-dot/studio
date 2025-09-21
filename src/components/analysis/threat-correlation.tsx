@@ -1,0 +1,137 @@
+'use client';
+
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { correlateThreatsAction } from '@/app/analysis/actions';
+import { type CorrelatePhishingEmailAndFraudulentTransactionOutput } from '@/ai/flows/correlate-phishing-email-and-fraudulent-transaction';
+import { Loader2, Link2, Zap } from 'lucide-react';
+
+const formSchema = z.object({
+  emailAnalysisReport: z.string().min(10, 'Please provide the email analysis report.'),
+  transactionDetails: z.string().min(10, 'Please provide the fraudulent transaction details.'),
+});
+
+export function ThreatCorrelation() {
+  const [result, setResult] = useState<CorrelatePhishingEmailAndFraudulentTransactionOutput | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      emailAnalysisReport: '',
+      transactionDetails: '',
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setResult(null);
+
+    const response = await correlateThreatsAction(
+      values.emailAnalysisReport,
+      values.transactionDetails
+    );
+
+    if (response.success && response.data) {
+      setResult(response.data);
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Correlation Failed',
+        description: response.error,
+      });
+    }
+    setIsLoading(false);
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Threat Correlation Engine</CardTitle>
+        <CardDescription>
+          Correlate findings from different agents to identify complex attack campaigns.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="emailAnalysisReport"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phishing Email Analysis Report</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Paste the report from the Phishing Detection agent..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="transactionDetails"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Fraudulent Transaction Details</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Paste the details from the Fraud Detection agent..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (
+                &lt;&gt;
+                  &lt;Loader2 className="mr-2 h-4 w-4 animate-spin" /&gt;
+                  Correlating...
+                &lt;/&gt;
+              ) : (
+                'Correlate Threats'
+              )}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+      {result &amp;&amp; (
+        &lt;CardFooter className="flex flex-col gap-4 items-start"&gt;
+          &lt;Card className="w-full bg-muted/50"&gt;
+            &lt;CardHeader&gt;
+              &lt;CardTitle className="flex items-center gap-2"&gt;
+                &lt;Link2 className="h-5 w-5 text-primary" /&gt;
+                Correlation Summary
+              &lt;/CardTitle&gt;
+            &lt;/CardHeader&gt;
+            &lt;CardContent&gt;
+              &lt;p className="text-sm"&gt;{result.correlationSummary}&lt;/p&gt;
+            &lt;/CardContent&gt;
+          &lt;/Card&gt;
+          &lt;Card className="w-full bg-muted/50"&gt;
+            &lt;CardHeader&gt;
+              &lt;CardTitle className="flex items-center gap-2"&gt;
+                &lt;Zap className="h-5 w-5 text-destructive" /&gt;
+                Recommended Actions
+              &lt;/CardTitle&gt;
+            &lt;/CardHeader&gt;
+            &lt;CardContent&gt;
+              &lt;p className="text-sm"&gt;{result.recommendedActions}&lt;/p&gt;
+                 &lt;div className="mt-4 flex gap-2"&gt;
+                    &lt;Button variant="destructive" size="sm"&gt;Isolate Systems&lt;/Button&gt;
+                    &lt;Button variant="outline" size="sm"&gt;Freeze Transaction&lt;/Button&gt;
+                 &lt;/div&gt;
+            &lt;/CardContent&gt;
+          &lt;/Card&gt;
+        &lt;/CardFooter&gt;
+      )}
+    &lt;/Card&gt;
+  );
+}
