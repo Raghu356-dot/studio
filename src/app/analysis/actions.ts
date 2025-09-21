@@ -3,6 +3,7 @@
 import { summarizeEmailContent } from '@/ai/flows/summarize-email-content';
 import { enhanceFraudAlert } from '@/ai/flows/enhance-fraud-alerts-with-explanations';
 import { correlatePhishingEmailAndFraudulentTransaction } from '@/ai/flows/correlate-phishing-email-and-fraudulent-transaction';
+import { scanUrlForThreats } from '@/ai/flows/scan-url-for-threats';
 
 export async function analyzeEmailAction(emailContent: string) {
   try {
@@ -45,5 +46,15 @@ export async function correlateThreatsAction(
   } catch (error) {
     console.error(error);
     return { success: false, error: 'Failed to correlate threats.' };
+  }
+}
+
+export async function scanUrlAction(url: string) {
+  try {
+    const result = await scanUrlForThreats({ url });
+    return { success: true, data: result };
+  } catch (error) {
+    console.error(error);
+    return { success: false, error: 'Failed to scan URL.' };
   }
 }
