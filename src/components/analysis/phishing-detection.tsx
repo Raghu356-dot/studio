@@ -46,7 +46,7 @@ export function PhishingDetection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Phishing &amp; Malware Detection</CardTitle>
+        <CardTitle>Phishing & Malware Detection</CardTitle>
         <CardDescription>
           Analyze email content for potential phishing attempts and malicious intent.
         </CardDescription>
@@ -61,30 +61,30 @@ export function PhishingDetection() {
         />
         <Button onClick={handleAnalyze} disabled={isLoading}>
           {isLoading ? (
-            &lt;&gt;
-              &lt;Loader2 className="mr-2 h-4 w-4 animate-spin" /&gt;
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Analyzing...
-            &lt;/&gt;
+            </>
           ) : (
             'Analyze Email'
           )}
         </Button>
       </CardContent>
-      {result &amp;&amp; (
-        &lt;CardFooter&gt;
-          &lt;Card className="w-full bg-muted/50"&gt;
-            &lt;CardHeader&gt;
-              &lt;CardTitle className="flex items-center gap-2"&gt;
-                &lt;AlertTriangle className="h-5 w-5 text-yellow-400" /&gt;
+      {result && (
+        <CardFooter>
+          <Card className="w-full bg-muted/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-yellow-400" />
                 Threat Assessment
-              &lt;/CardTitle&gt;
-            &lt;/CardHeader&gt;
-            &lt;CardContent&gt;
-              &lt;p className="text-sm"&gt;{result.summary}&lt;/p&gt;
-            &lt;/CardContent&gt;
-          &lt;/Card&gt;
-        &lt;/CardFooter&gt;
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm">{result.summary}</p>
+            </CardContent>
+          </Card>
+        </CardFooter>
       )}
-    &lt;/Card&gt;
+    </Card>
   );
 }

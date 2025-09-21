@@ -91,10 +91,10 @@ export function ThreatCorrelation() {
             />
             <Button type="submit" disabled={isLoading}>
               {isLoading ? (
-                &lt;&gt;
-                  &lt;Loader2 className="mr-2 h-4 w-4 animate-spin" /&gt;
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Correlating...
-                &lt;/&gt;
+                </>
               ) : (
                 'Correlate Threats'
               )}
@@ -102,36 +102,36 @@ export function ThreatCorrelation() {
           </form>
         </Form>
       </CardContent>
-      {result &amp;&amp; (
-        &lt;CardFooter className="flex flex-col gap-4 items-start"&gt;
-          &lt;Card className="w-full bg-muted/50"&gt;
-            &lt;CardHeader&gt;
-              &lt;CardTitle className="flex items-center gap-2"&gt;
-                &lt;Link2 className="h-5 w-5 text-primary" /&gt;
+      {result && (
+        <CardFooter className="flex flex-col gap-4 items-start">
+          <Card className="w-full bg-muted/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Link2 className="h-5 w-5 text-primary" />
                 Correlation Summary
-              &lt;/CardTitle&gt;
-            &lt;/CardHeader&gt;
-            &lt;CardContent&gt;
-              &lt;p className="text-sm"&gt;{result.correlationSummary}&lt;/p&gt;
-            &lt;/CardContent&gt;
-          &lt;/Card&gt;
-          &lt;Card className="w-full bg-muted/50"&gt;
-            &lt;CardHeader&gt;
-              &lt;CardTitle className="flex items-center gap-2"&gt;
-                &lt;Zap className="h-5 w-5 text-destructive" /&gt;
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm">{result.correlationSummary}</p>
+            </CardContent>
+          </Card>
+          <Card className="w-full bg-muted/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="h-5 w-5 text-destructive" />
                 Recommended Actions
-              &lt;/CardTitle&gt;
-            &lt;/CardHeader&gt;
-            &lt;CardContent&gt;
-              &lt;p className="text-sm"&gt;{result.recommendedActions}&lt;/p&gt;
-                 &lt;div className="mt-4 flex gap-2"&gt;
-                    &lt;Button variant="destructive" size="sm"&gt;Isolate Systems&lt;/Button&gt;
-                    &lt;Button variant="outline" size="sm"&gt;Freeze Transaction&lt;/Button&gt;
-                 &lt;/div&gt;
-            &lt;/CardContent&gt;
-          &lt;/Card&gt;
-        &lt;/CardFooter&gt;
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm">{result.recommendedActions}</p>
+                 <div className="mt-4 flex gap-2">
+                    <Button variant="destructive" size="sm">Isolate Systems</Button>
+                    <Button variant="outline" size="sm">Freeze Transaction</Button>
+                 </div>
+            </CardContent>
+          </Card>
+        </CardFooter>
       )}
-    &lt;/Card&gt;
+    </Card>
   );
 }

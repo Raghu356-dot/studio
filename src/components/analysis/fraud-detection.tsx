@@ -122,10 +122,10 @@ export function FraudDetection() {
             />
             <Button type="submit" disabled={isLoading}>
               {isLoading ? (
-                &lt;&gt;
-                  &lt;Loader2 className="mr-2 h-4 w-4 animate-spin" /&gt;
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Analyzing...
-                &lt;/&gt;
+                </>
               ) : (
                 'Analyze Transaction'
               )}
@@ -133,26 +133,26 @@ export function FraudDetection() {
           </form>
         </Form>
       </CardContent>
-      {result &amp;&amp; (
-        &lt;CardFooter&gt;
-          &lt;Card className="w-full bg-muted/50"&gt;
-            &lt;CardHeader&gt;
-              &lt;CardTitle className="flex items-center justify-between"&gt;
-                &lt;div className="flex items-center gap-2"&gt;
-                  &lt;ShieldAlert className="h-5 w-5 text-accent" /&gt;
+      {result && (
+        <CardFooter>
+          <Card className="w-full bg-muted/50">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShieldAlert className="h-5 w-5 text-accent" />
                   Fraud Alert Details
-                &lt;/div&gt;
-                 &lt;Badge variant="outline" className={riskLevelStyles[result.riskLevel.toLowerCase() as keyof typeof riskLevelStyles] || ''}&gt;
+                </div>
+                 <Badge variant="outline" className={riskLevelStyles[result.riskLevel.toLowerCase() as keyof typeof riskLevelStyles] || ''}>
                   Risk: {result.riskLevel}
-                &lt;/Badge&gt;
-              &lt;/CardTitle&gt;
-            &lt;/CardHeader&gt;
-            &lt;CardContent&gt;
-              &lt;p className="text-sm"&gt;{result.explanation}&lt;/p&gt;
-            &lt;/CardContent&gt;
-          &lt;/Card&gt;
-        &lt;/CardFooter&gt;
+                </Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm">{result.explanation}</p>
+            </CardContent>
+          </Card>
+        </CardFooter>
       )}
-    &lt;/Card&gt;
+    </Card>
   );
 }
