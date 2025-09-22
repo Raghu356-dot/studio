@@ -7,8 +7,8 @@ import { AppLayout } from '@/components/layout/app-layout';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Multiagent Cybersecurity',
-  description: 'Multi-AI Agent System for Cybersecurity Intelligence',
+  title: 'Multi-AI Agent System for Cybersecurity Intelligence',
+  description: 'A collaborative multi-AI agent system that autonomously detects, analyzes, and responds to cybersecurity threats.',
 };
 
 export default function RootLayout({

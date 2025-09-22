@@ -33,7 +33,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <div className="flex items-center gap-2">
           <MultiagentCybersecurityLogo className="h-8 w-8 text-primary" />
-          <span className="text-lg font-semibold">Multiagent Cybersecurity</span>
+          <span className="text-lg font-semibold">Multi-AI Agent System</span>
         </div>
       </SidebarHeader>
       <SidebarContent className="p-2">
