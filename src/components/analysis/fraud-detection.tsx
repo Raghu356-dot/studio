@@ -50,7 +50,7 @@ export function FraudDetection() {
     if (response.success && response.data) {
       setResult(response.data);
       addHistoryRecord('Fraud Detection', values, response.data);
-      form.reset();
+      form.reset({ transactionDetails: '', userProfile: '', anomalyScore: 50 });
     } else {
       toast({
         variant: 'destructive',
@@ -74,7 +74,7 @@ export function FraudDetection() {
       <CardHeader>
         <CardTitle>Fraud Detection</CardTitle>
         <CardDescription>
-          This tool analyzes transaction details and user profiles to identify potentially fraudulent activity. Provide the necessary information to get a risk assessment and explanation.
+          This tool analyzes transaction details and user profiles to identify potentially fraudulent activity. The anomaly score represents how unusual a transaction is (0 = normal, 100 = highly unusual).
         </CardDescription>
       </CardHeader>
       <CardContent>
