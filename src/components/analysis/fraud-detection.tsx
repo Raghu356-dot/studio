@@ -47,6 +47,7 @@ export function FraudDetection() {
 
     if (response.success && response.data) {
       setResult(response.data);
+      form.reset();
     } else {
       toast({
         variant: 'destructive',

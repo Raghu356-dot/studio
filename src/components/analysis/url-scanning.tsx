@@ -38,6 +38,7 @@ export function UrlScanning() {
 
     if (response.success && response.data) {
       setResult(response.data);
+      form.reset();
     } else {
       toast({
         variant: 'destructive',

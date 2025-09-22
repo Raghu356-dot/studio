@@ -42,6 +42,7 @@ export function ThreatCorrelation() {
 
     if (response.success && response.data) {
       setResult(response.data);
+      form.reset();
     } else {
       toast({
         variant: 'destructive',
