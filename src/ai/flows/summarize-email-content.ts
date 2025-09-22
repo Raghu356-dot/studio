@@ -37,16 +37,16 @@ const prompt = ai.definePrompt({
   name: 'summarizeEmailContentPrompt',
   input: {schema: SummarizeEmailContentInputSchema},
   output: {schema: SummarizeEmailContentOutputSchema},
-  prompt: `You are a security analyst providing a detailed threat assessment of an email. Analyze the following content and provide a comprehensive summary.
+  prompt: `You are a security analyst providing a threat assessment of an email. Analyze the following content and provide a summary in a structured, easy-to-read format.
 
 Email Content:
 {{{emailContent}}}
 
-Your summary should include the following sections:
-- **Identified Threats:** (e.g., Phishing attempt, Malware attachment, Social engineering)
-- **Sender's Intent:** (e.g., To steal credentials, to install malware, to request a fraudulent payment)
-- **Key Indicators:** (List the specific words, phrases, or links that are suspicious)
-- **Overall Risk Assessment:** (Provide a brief explanation of the risk level and your reasoning)
+Your summary should be a single block of text and include the following sections with clear headings:
+- **Identified Threats:** (e.g., Phishing attempt, Malware attachment)
+- **Sender's Intent:** (e.g., To steal credentials, to install malware)
+- **Key Indicators:** (List 2-3 specific suspicious words, phrases, or links)
+- **Overall Risk:** (e.g., High, Medium, Low)
 `,
 });
 

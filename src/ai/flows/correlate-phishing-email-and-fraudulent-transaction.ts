@@ -49,9 +49,7 @@ const prompt = ai.definePrompt({
   name: 'correlatePhishingEmailAndFraudulentTransactionPrompt',
   input: {schema: CorrelatePhishingEmailAndFraudulentTransactionInputSchema},
   output: {schema: CorrelatePhishingEmailAndFraudulentTransactionOutputSchema},
-  prompt: `You are an expert cybersecurity investigator tasked with correlating phishing email events with fraudulent transactions.
-
-  Analyze the provided information to determine the likelihood and nature of a connection between the phishing email and the fraudulent transaction.
+  prompt: `You are an expert cybersecurity investigator. Analyze the provided information to find a connection between a phishing email and a fraudulent transaction.
 
   Email Analysis Report:
   {{{emailAnalysisReport}}}
@@ -59,18 +57,14 @@ const prompt = ai.definePrompt({
   Fraudulent Transaction Details:
   {{{transactionDetails}}}
 
-  Based on your analysis, provide a detailed correlation summary and a list of recommended actions.
-
-  **Correlation Summary:**
+  For the **correlationSummary**, provide a short, structured summary including:
   - **Likelihood of Connection:** (e.g., High, Medium, Low)
-  - **Supporting Evidence:** (e.g., matching timestamps, similar entities, payload analysis)
-  - **Potential Impact:** (e.g., financial loss, data breach, account compromise)
-  - **Detailed Explanation:** (Provide a thorough explanation of your findings)
+  - **Supporting Evidence:** (List 1-2 key pieces of evidence, e.g., matching timestamps)
+  - **Potential Impact:** (e.g., financial loss, data breach)
 
-  **Recommended Actions:**
-  - **Immediate Actions:** (List critical steps to take immediately)
-  - **Secondary Actions:** (List follow-up steps for containment and recovery)
-  - **Long-term Prevention:** (Suggest measures to prevent similar incidents in the future)
+  For the **recommendedActions**, list 2-3 clear, actionable steps:
+  - **Immediate:** (e.g., Freeze account, Block sender)
+  - **Follow-up:** (e.g., Initiate wider investigation)
   `,
 });
 

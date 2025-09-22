@@ -39,18 +39,15 @@ const prompt = ai.definePrompt({
   name: 'enhanceFraudAlertPrompt',
   input: {schema: EnhanceFraudAlertInputSchema},
   output: {schema: EnhanceFraudAlertOutputSchema},
-  prompt: `You are an expert fraud detection analyst. Given the following transaction details, user profile, and anomaly score, provide a detailed, human-readable explanation of why the transaction was flagged as potentially fraudulent. Also, determine a risk level (low, medium, high) based on your comprehensive analysis.
+  prompt: `You are an expert fraud detection analyst. Given the following transaction details, user profile, and anomaly score, provide a concise explanation of why the transaction was flagged and determine a risk level.
 
 Transaction Details: {{{transactionDetails}}}
 User Profile: {{{userProfile}}}
 Anomaly Score: {{{anomalyScore}}}
 
-**Explanation:**
-- **Key Factors:** What are the top 3-5 factors contributing to the fraud risk? (e.g., unusual location, high transaction amount, new device)
-- **Behavioral Analysis:** Does this transaction deviate from the user's typical behavior? If so, how?
-- **Detailed Rationale:** Provide a step-by-step breakdown of your reasoning, connecting the data points to the final risk assessment.
-
-**Risk Level:** (e.g., Low, Medium, High)
+Your output should be a single block of text and include:
+- **Key Factors:** List the top 2-3 factors contributing to the risk (e.g., unusual location, high amount, new device).
+- **Behavioral Analysis:** Briefly note if this deviates from the user's typical behavior.
 `,
 });
 
