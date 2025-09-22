@@ -5,12 +5,19 @@ import { PhishingDetection } from './phishing-detection';
 import { FraudDetection } from './fraud-detection';
 import { ThreatCorrelation } from './threat-correlation';
 import { UrlScanning } from './url-scanning';
-import { Fish, CreditCard, GitMerge, Link as LinkIcon } from 'lucide-react';
+import { MalwareAnalysis } from './malware-analysis';
+import {
+  Fish,
+  CreditCard,
+  GitMerge,
+  Link as LinkIcon,
+  FileScan,
+} from 'lucide-react';
 
 export function AnalysisTabs() {
   return (
     <Tabs defaultValue="phishing" className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
+      <TabsList className="grid w-full grid-cols-5">
         <TabsTrigger value="phishing">
           <Fish className="mr-2 h-4 w-4" />
           Phishing Detection
@@ -27,6 +34,10 @@ export function AnalysisTabs() {
           <LinkIcon className="mr-2 h-4 w-4" />
           URL Scanning
         </TabsTrigger>
+        <TabsTrigger value="malware-analysis">
+          <FileScan className="mr-2 h-4 w-4" />
+          Malware Analysis
+        </TabsTrigger>
       </TabsList>
       <TabsContent value="phishing">
         <PhishingDetection />
@@ -39,6 +50,9 @@ export function AnalysisTabs() {
       </TabsContent>
       <TabsContent value="url-scanning">
         <UrlScanning />
+      </TabsContent>
+      <TabsContent value="malware-analysis">
+        <MalwareAnalysis />
       </TabsContent>
     </Tabs>
   );
