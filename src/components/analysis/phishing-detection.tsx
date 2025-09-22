@@ -32,6 +32,7 @@ export function PhishingDetection() {
 
     if (response.success && response.data) {
       setResult(response.data);
+      setEmailContent('');
     } else {
       toast({
         variant: 'destructive',
