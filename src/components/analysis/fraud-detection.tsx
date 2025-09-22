@@ -70,7 +70,7 @@ export function FraudDetection() {
       <CardHeader>
         <CardTitle>Fraud Detection</CardTitle>
         <CardDescription>
-          Analyze transaction details and user behavior to flag fraudulent activity.
+          This tool analyzes transaction details and user profiles to identify potentially fraudulent activity. Provide the necessary information to get a risk assessment and explanation.
         </CardDescription>
       </CardHeader>
       <CardContent>

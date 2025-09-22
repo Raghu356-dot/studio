@@ -57,7 +57,7 @@ export function ThreatCorrelation() {
       <CardHeader>
         <CardTitle>Threat Correlation Engine</CardTitle>
         <CardDescription>
-          Correlate findings from different agents to identify complex attack campaigns.
+          This tool links security events from different sources, like a phishing email and a fraudulent transaction, to uncover coordinated attacks. Paste the analysis reports below to see the connection.
         </CardDescription>
       </CardHeader>
       <CardContent>

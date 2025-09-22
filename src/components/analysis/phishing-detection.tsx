@@ -48,7 +48,7 @@ export function PhishingDetection() {
       <CardHeader>
         <CardTitle>Phishing & Malware Detection</CardTitle>
         <CardDescription>
-          Analyze email content for potential phishing attempts and malicious intent.
+          This tool analyzes email content for signs of phishing attempts, malware, or other malicious intent. Paste the full email content below to receive a threat assessment summary.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

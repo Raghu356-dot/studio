@@ -61,7 +61,7 @@ export function UrlScanning() {
       <CardHeader>
         <CardTitle>URL Threat Scanner</CardTitle>
         <CardDescription>
-          Analyze a URL for potential phishing, malware, or other threats.
+          This tool scans URLs for potential threats like phishing, malware, or scams. Enter a URL to check its safety and view a detailed analysis of potential risks.
         </CardDescription>
       </CardHeader>
       <CardContent>
