@@ -6,7 +6,7 @@ export default function AnalysisPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Analysis Tools</h1>
         <p className="text-muted-foreground">
-          Leverage AI agents to detect and analyze cybersecurity threats.
+          Leverage specialized AI agents to detect, analyze, and respond to cybersecurity threats.
         </p>
       </div>
       <AnalysisTabs />

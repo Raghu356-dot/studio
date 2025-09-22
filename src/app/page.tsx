@@ -11,8 +11,7 @@ export default function DashboardPage() {
           Dashboard
         </h1>
         <p className="text-muted-foreground">
-          An overview of threats analyzed by a collaborative multi-AI agent
-          system.
+          A collaborative multi-AI agent system that autonomously detects, analyzes, and responds to cybersecurity threats.
         </p>
       </div>
       <div className="lg:col-span-3">
