@@ -13,6 +13,7 @@ import { scanUrlAction } from '@/app/analysis/actions';
 import { type ScanUrlForThreatsOutput } from '@/ai/flows/scan-url-for-threats';
 import { Loader2, ShieldAlert, ShieldCheck } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { useAnalysisHistory } from '@/hooks/use-analysis-history';
 
 const formSchema = z.object({
   url: z.string().url({ message: 'Please enter a valid URL.' }),
@@ -22,6 +23,7 @@ export function UrlScanning() {
   const [result, setResult] = useState<ScanUrlForThreatsOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { addHistoryRecord } = useAnalysisHistory();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,6 +40,7 @@ export function UrlScanning() {
 
     if (response.success && response.data) {
       setResult(response.data);
+      addHistoryRecord('URL Scanning', values, response.data);
       form.reset();
     } else {
       toast({
@@ -113,7 +116,7 @@ export function UrlScanning() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">{result.summary}</p>
+              <div className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: result.summary.replace(/\n/g, '<br />') }} />
             </CardContent>
           </Card>
         </CardFooter>

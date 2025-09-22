@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { correlateThreatsAction } from '@/app/analysis/actions';
 import { type CorrelatePhishingEmailAndFraudulentTransactionOutput } from '@/ai/flows/correlate-phishing-email-and-fraudulent-transaction';
 import { Loader2, Link2, Zap } from 'lucide-react';
+import { useAnalysisHistory } from '@/hooks/use-analysis-history';
 
 const formSchema = z.object({
   emailAnalysisReport: z.string().min(10, 'Please provide the email analysis report.'),
@@ -22,6 +23,7 @@ export function ThreatCorrelation() {
   const [result, setResult] = useState<CorrelatePhishingEmailAndFraudulentTransactionOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { addHistoryRecord } = useAnalysisHistory();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,6 +44,7 @@ export function ThreatCorrelation() {
 
     if (response.success && response.data) {
       setResult(response.data);
+      addHistoryRecord('Threat Correlation', values, response.data);
       form.reset();
     } else {
       toast({
@@ -120,7 +123,7 @@ export function ThreatCorrelation() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">{result.correlationSummary}</p>
+              <div className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: result.correlationSummary.replace(/\n/g, '<br />') }} />
             </CardContent>
           </Card>
           <Card className="w-full bg-muted/50">
@@ -131,7 +134,7 @@ export function ThreatCorrelation() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">{result.recommendedActions}</p>
+              <div className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: result.recommendedActions.replace(/\n/g, '<br />') }} />
                  <div className="mt-4 flex gap-2">
                     <Button variant="destructive" size="sm" onClick={() => handleResponseAction('System isolation')}>Isolate Systems</Button>
                     <Button variant="outline" size="sm" onClick={() => handleResponseAction('Transaction freeze')}>Freeze Transaction</Button>

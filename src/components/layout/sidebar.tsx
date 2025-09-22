@@ -16,13 +16,14 @@ import {
   FlaskConical,
   Settings,
   CircleHelp,
+  History,
 } from 'lucide-react';
 import { MultiagentCybersecurityLogo } from '@/components/icons';
-import { Button } from '../ui/button';
 
 const menuItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/analysis', label: 'Analysis Tools', icon: FlaskConical },
+  { href: '/history', label: 'History', icon: History },
 ];
 
 export function AppSidebar() {

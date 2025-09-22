@@ -14,6 +14,7 @@ import { analyzeFraudAction } from '@/app/analysis/actions';
 import { type EnhanceFraudAlertOutput } from '@/ai/flows/enhance-fraud-alerts-with-explanations';
 import { Loader2, ShieldAlert } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { useAnalysisHistory } from '@/hooks/use-analysis-history';
 
 const formSchema = z.object({
   transactionDetails: z.string().min(10, 'Please provide more transaction details.'),
@@ -25,6 +26,7 @@ export function FraudDetection() {
   const [result, setResult] = useState<EnhanceFraudAlertOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { addHistoryRecord } = useAnalysisHistory();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,6 +49,7 @@ export function FraudDetection() {
 
     if (response.success && response.data) {
       setResult(response.data);
+      addHistoryRecord('Fraud Detection', values, response.data);
       form.reset();
     } else {
       toast({
@@ -149,7 +152,7 @@ export function FraudDetection() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">{result.explanation}</p>
+              <div className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: result.explanation.replace(/\n/g, '<br />') }} />
             </CardContent>
           </Card>
         </CardFooter>

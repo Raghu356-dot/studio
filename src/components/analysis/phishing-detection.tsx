@@ -8,12 +8,14 @@ import { useToast } from '@/hooks/use-toast';
 import { analyzeEmailAction } from '@/app/analysis/actions';
 import { type SummarizeEmailContentOutput } from '@/ai/flows/summarize-email-content';
 import { Loader2, AlertTriangle } from 'lucide-react';
+import { useAnalysisHistory } from '@/hooks/use-analysis-history';
 
 export function PhishingDetection() {
   const [emailContent, setEmailContent] = useState('');
   const [result, setResult] = useState<SummarizeEmailContentOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { addHistoryRecord } = useAnalysisHistory();
 
   const handleAnalyze = async () => {
     if (!emailContent.trim()) {
@@ -32,6 +34,7 @@ export function PhishingDetection() {
 
     if (response.success && response.data) {
       setResult(response.data);
+      addHistoryRecord('Phishing Detection', { emailContent }, response.data);
       setEmailContent('');
     } else {
       toast({
@@ -81,7 +84,7 @@ export function PhishingDetection() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">{result.summary}</p>
+              <div className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: result.summary.replace(/\n/g, '<br />') }} />
             </CardContent>
           </Card>
         </CardFooter>

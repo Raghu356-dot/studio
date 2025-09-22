@@ -13,3 +13,11 @@ export type ThreatTrendData = {
   malware: number;
   fraud: number;
 };
+
+export type AnalysisRecord = {
+  id: string;
+  timestamp: string;
+  tool: string;
+  input: any;
+  result: any;
+};
