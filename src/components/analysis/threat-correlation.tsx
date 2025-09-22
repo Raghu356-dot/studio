@@ -52,6 +52,13 @@ export function ThreatCorrelation() {
     setIsLoading(false);
   }
 
+  const handleResponseAction = (action: string) => {
+    toast({
+      title: 'Action Triggered',
+      description: `${action} has been initiated.`,
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -125,8 +132,8 @@ export function ThreatCorrelation() {
             <CardContent>
               <p className="text-sm">{result.recommendedActions}</p>
                  <div className="mt-4 flex gap-2">
-                    <Button variant="destructive" size="sm">Isolate Systems</Button>
-                    <Button variant="outline" size="sm">Freeze Transaction</Button>
+                    <Button variant="destructive" size="sm" onClick={() => handleResponseAction('System isolation')}>Isolate Systems</Button>
+                    <Button variant="outline" size="sm" onClick={() => handleResponseAction('Transaction freeze')}>Freeze Transaction</Button>
                  </div>
             </CardContent>
           </Card>
