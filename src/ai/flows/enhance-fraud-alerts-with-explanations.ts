@@ -24,7 +24,9 @@ export type EnhanceFraudAlertInput = z.infer<typeof EnhanceFraudAlertInputSchema
 const EnhanceFraudAlertOutputSchema = z.object({
   explanation: z
     .string()
-    .describe('A human-readable explanation of why the transaction was flagged as potentially fraudulent.'),
+    .describe(
+      'A detailed, human-readable explanation of why the transaction was flagged as potentially fraudulent. Reference specific data points from the transaction and user profile to support your analysis.'
+    ),
   riskLevel: z.string().describe('The risk level associated with the transaction (e.g., low, medium, high).'),
 });
 export type EnhanceFraudAlertOutput = z.infer<typeof EnhanceFraudAlertOutputSchema>;
@@ -37,14 +39,19 @@ const prompt = ai.definePrompt({
   name: 'enhanceFraudAlertPrompt',
   input: {schema: EnhanceFraudAlertInputSchema},
   output: {schema: EnhanceFraudAlertOutputSchema},
-  prompt: `You are a fraud detection expert. Given the following transaction details, user profile, and anomaly score, provide a human-readable explanation of why the transaction was flagged as potentially fraudulent. Also, determine a risk level (low, medium, high) based on your analysis.
+  prompt: `You are an expert fraud detection analyst. Given the following transaction details, user profile, and anomaly score, provide a detailed, human-readable explanation of why the transaction was flagged as potentially fraudulent. Also, determine a risk level (low, medium, high) based on your comprehensive analysis.
 
 Transaction Details: {{{transactionDetails}}}
 User Profile: {{{userProfile}}}
 Anomaly Score: {{{anomalyScore}}}
 
-Explanation: 
-Risk Level: `,
+**Explanation:**
+- **Key Factors:** What are the top 3-5 factors contributing to the fraud risk? (e.g., unusual location, high transaction amount, new device)
+- **Behavioral Analysis:** Does this transaction deviate from the user's typical behavior? If so, how?
+- **Detailed Rationale:** Provide a step-by-step breakdown of your reasoning, connecting the data points to the final risk assessment.
+
+**Risk Level:** (e.g., Low, Medium, High)
+`,
 });
 
 const enhanceFraudAlertFlow = ai.defineFlow(

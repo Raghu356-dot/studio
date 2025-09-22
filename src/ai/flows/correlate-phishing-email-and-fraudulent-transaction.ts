@@ -27,12 +27,12 @@ const CorrelatePhishingEmailAndFraudulentTransactionOutputSchema = z.object({
   correlationSummary: z
     .string()
     .describe(
-      'A summary of the correlation between the phishing email and the fraudulent transaction, including the likelihood of a connection and potential impact.'
+      'A detailed summary of the correlation between the phishing email and the fraudulent transaction. Explain the likelihood of a connection, the evidence found, and the potential impact of the combined threat.'
     ),
   recommendedActions: z
     .string()
     .describe(
-      'Recommended actions based on the correlation analysis, such as freezing accounts or initiating further investigation.'
+      'A comprehensive list of recommended actions based on the correlation analysis. Prioritize actions and provide clear, step-by-step instructions for mitigation, such as freezing accounts, blocking senders, or initiating a wider investigation.'
     ),
 });
 export type CorrelatePhishingEmailAndFraudulentTransactionOutput = z.infer<
@@ -49,17 +49,29 @@ const prompt = ai.definePrompt({
   name: 'correlatePhishingEmailAndFraudulentTransactionPrompt',
   input: {schema: CorrelatePhishingEmailAndFraudulentTransactionInputSchema},
   output: {schema: CorrelatePhishingEmailAndFraudulentTransactionOutputSchema},
-  prompt: `You are a cybersecurity expert tasked with correlating phishing email events with fraudulent transactions.
+  prompt: `You are an expert cybersecurity investigator tasked with correlating phishing email events with fraudulent transactions.
 
-  Analyze the provided information to determine the likelihood of a connection between the phishing email and the fraudulent transaction.  Assess the potential impact of the combined threat.
+  Analyze the provided information to determine the likelihood and nature of a connection between the phishing email and the fraudulent transaction.
 
-  Provide a concise summary of your findings and recommend actions to mitigate the threat.
+  Email Analysis Report:
+  {{{emailAnalysisReport}}}
 
-  Email Analysis Report: {{{emailAnalysisReport}}}
-  Transaction Details: {{{transactionDetails}}}
+  Fraudulent Transaction Details:
+  {{{transactionDetails}}}
 
-  Correlation Summary:
-  Recommended Actions: `,
+  Based on your analysis, provide a detailed correlation summary and a list of recommended actions.
+
+  **Correlation Summary:**
+  - **Likelihood of Connection:** (e.g., High, Medium, Low)
+  - **Supporting Evidence:** (e.g., matching timestamps, similar entities, payload analysis)
+  - **Potential Impact:** (e.g., financial loss, data breach, account compromise)
+  - **Detailed Explanation:** (Provide a thorough explanation of your findings)
+
+  **Recommended Actions:**
+  - **Immediate Actions:** (List critical steps to take immediately)
+  - **Secondary Actions:** (List follow-up steps for containment and recovery)
+  - **Long-term Prevention:** (Suggest measures to prevent similar incidents in the future)
+  `,
 });
 
 const correlatePhishingEmailAndFraudulentTransactionFlow = ai.defineFlow(

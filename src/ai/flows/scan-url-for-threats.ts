@@ -27,7 +27,9 @@ const ScanUrlForThreatsOutputSchema = z.object({
     ),
   summary: z
     .string()
-    .describe('A summary of the findings from the URL scan.'),
+    .describe(
+      'A detailed summary of the findings from the URL scan, explaining the reasoning and specific red flags identified.'
+    ),
 });
 export type ScanUrlForThreatsOutput = z.infer<typeof ScanUrlForThreatsOutputSchema>;
 
@@ -46,15 +48,16 @@ const prompt = ai.definePrompt({
   URL to Analyze: {{{url}}}
 
   Carefully examine the URL for the following red flags:
-  1.  **Misleading Subdomains:** Look for brand names in the subdomain (e.g., 'paypal.secure-login.com' instead of 'paypal.com').
-  2.  **Suspicious TLDs:** Pay attention to TLDs often associated with spam or malware (e.g., .xyz, .club, .top, .site).
-  3.  **Character Substitution:** Check for common character impersonations (e.g., 'g00gle.com' instead of 'google.com', or using 'l' for 'i').
-  4.  **Excessively Long URLs or Unusual Paths:** Long, complex URLs with random characters can be a sign of a malicious site.
+  1.  **Domain & TLD Analysis:** Is the domain trying to impersonate a known brand? Is the Top-Level Domain (TLD) unusual or commonly associated with malicious activity (e.g., .xyz, .club, .top)?
+  2.  **Subdomain Analysis:** Look for misleading subdomains (e.g., 'paypal.secure-login.com' instead of 'paypal.com').
+  3.  **Character & Path Analysis:** Check for character substitution (e.g., 'g00gle.com'), excessively long paths, or random-looking strings in the URL structure.
+  4.  **Hypothesized Content:** Based on the URL structure, what is the likely purpose of this page (e.g., login form, marketing page, file download)?
 
   Based on your analysis:
   - If you find strong indicators of malicious intent, set isMalicious to true and specify the threatType (e.g., "Phishing", "Malware", "Scam").
   - If the URL appears safe, set isMalicious to false and set the threatType to "Benign".
-  - Provide a concise summary explaining your reasoning, referencing the specific red flags you identified (or lack thereof).`,
+  - Provide a detailed summary explaining your reasoning. Reference the specific red flags you identified (or lack thereof) and explain how they contribute to your conclusion.
+  `,
 });
 
 const scanUrlForThreatsFlow = ai.defineFlow(
