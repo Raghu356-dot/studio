@@ -17,7 +17,7 @@ import {
   Settings,
   CircleHelp,
 } from 'lucide-react';
-import { CyberGuardLogo } from '@/components/icons';
+import { MultiagentCybersecurityLogo } from '@/components/icons';
 import { Button } from '../ui/button';
 
 const menuItems = [
@@ -32,8 +32,8 @@ export function AppSidebar() {
     <ShadcnSidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-          <CyberGuardLogo className="h-8 w-8 text-primary" />
-          <span className="text-lg font-semibold">CyberGuard AI</span>
+          <MultiagentCybersecurityLogo className="h-8 w-8 text-primary" />
+          <span className="text-lg font-semibold">Multiagent Cybersecurity</span>
         </div>
       </SidebarHeader>
       <SidebarContent className="p-2">
