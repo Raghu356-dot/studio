@@ -152,7 +152,7 @@ export function FraudDetection() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: result.explanation.replace(/\n/g, '<br />') }} />
+              <div className="text-sm prose-sm prose-p:m-0 prose-ul:m-0 prose-li:m-0" dangerouslySetInnerHTML={{ __html: result.explanation.replace(/\n/g, '<br />') }} />
             </CardContent>
           </Card>
         </CardFooter>

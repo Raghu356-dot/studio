@@ -123,7 +123,7 @@ export function ThreatCorrelation() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: result.correlationSummary.replace(/\n/g, '<br />') }} />
+              <div className="text-sm prose-sm prose-p:m-0 prose-ul:m-0 prose-li:m-0" dangerouslySetInnerHTML={{ __html: result.correlationSummary.replace(/\n/g, '<br />') }} />
             </CardContent>
           </Card>
           <Card className="w-full bg-muted/50">
@@ -134,7 +134,7 @@ export function ThreatCorrelation() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: result.recommendedActions.replace(/\n/g, '<br />') }} />
+              <div className="text-sm prose-sm prose-p:m-0 prose-ul:m-0 prose-li:m-0" dangerouslySetInnerHTML={{ __html: result.recommendedActions.replace(/\n/g, '<br />') }} />
                  <div className="mt-4 flex gap-2">
                     <Button variant="destructive" size="sm" onClick={() => handleResponseAction('System isolation')}>Isolate Systems</Button>
                     <Button variant="outline" size="sm" onClick={() => handleResponseAction('Transaction freeze')}>Freeze Transaction</Button>

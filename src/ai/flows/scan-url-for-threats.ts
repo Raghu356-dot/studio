@@ -43,13 +43,13 @@ const prompt = ai.definePrompt({
   name: 'scanUrlForThreatsPrompt',
   input: {schema: ScanUrlForThreatsInputSchema},
   output: {schema: ScanUrlForThreatsOutputSchema},
-  prompt: `You are a cybersecurity analyst. Analyze the provided URL and determine if it poses a threat.
+  prompt: `You are a cybersecurity analyst. Analyze the provided URL and determine if it poses a threat. Format your output using markdown.
 
   URL to Analyze: {{{url}}}
 
-  Provide a concise summary explaining your reasoning. If malicious, list the specific red flags you identified (e.g., misleading subdomain, unusual TLD). Your output should be a single block of text.
+  Provide a concise summary explaining your reasoning. Your output should be a single block of text.
   - **Analysis:** Briefly explain your conclusion.
-  - **Red Flags:** (List 1-2 if malicious, otherwise "None")
+  - **Red Flags:** Use a bulleted list for 1-2 red flags if malicious, otherwise "None".
   `,
 });
 

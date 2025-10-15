@@ -49,7 +49,7 @@ const prompt = ai.definePrompt({
   name: 'correlatePhishingEmailAndFraudulentTransactionPrompt',
   input: {schema: CorrelatePhishingEmailAndFraudulentTransactionInputSchema},
   output: {schema: CorrelatePhishingEmailAndFraudulentTransactionOutputSchema},
-  prompt: `You are an expert cybersecurity investigator. Analyze the provided information to find a connection between a phishing email and a fraudulent transaction.
+  prompt: `You are an expert cybersecurity investigator. Analyze the provided information to find a connection between a phishing email and a fraudulent transaction. Format your output using markdown.
 
   Email Analysis Report:
   {{{emailAnalysisReport}}}
@@ -59,10 +59,10 @@ const prompt = ai.definePrompt({
 
   For the **correlationSummary**, provide a short, structured summary including:
   - **Likelihood of Connection:** (e.g., High, Medium, Low)
-  - **Supporting Evidence:** (List 1-2 key pieces of evidence, e.g., matching timestamps)
+  - **Supporting Evidence:** Use a bulleted list for 1-2 key pieces of evidence (e.g., matching timestamps).
   - **Potential Impact:** (e.g., financial loss, data breach)
 
-  For the **recommendedActions**, list 2-3 clear, actionable steps:
+  For the **recommendedActions**, list 2-3 clear, actionable steps in a bulleted list:
   - **Immediate:** (e.g., Freeze account, Block sender)
   - **Follow-up:** (e.g., Initiate wider investigation)
   `,

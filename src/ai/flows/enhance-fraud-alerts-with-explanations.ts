@@ -45,8 +45,8 @@ Transaction Details: {{{transactionDetails}}}
 User Profile: {{{userProfile}}}
 Anomaly Score: {{{anomalyScore}}}
 
-Your output should be a single block of text and include:
-- **Key Factors:** List the top 2-3 factors contributing to the risk (e.g., unusual location, high amount, new device).
+Your output should be a single block of text using markdown and include:
+- **Key Factors:** Use a bulleted list for the top 2-3 factors contributing to the risk (e.g., unusual location, high amount, new device).
 - **Behavioral Analysis:** Briefly note if this deviates from the user's typical behavior.
 `,
 });
