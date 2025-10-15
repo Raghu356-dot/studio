@@ -11,8 +11,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { correlateThreatsAction } from '@/app/analysis/actions';
 import { type CorrelatePhishingEmailAndFraudulentTransactionOutput } from '@/ai/flows/correlate-phishing-email-and-fraudulent-transaction';
-import { Loader2, Link2, Zap } from 'lucide-react';
+import { Loader2, Link2, Zap, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAnalysisHistory } from '@/hooks/use-analysis-history';
+import { Separator } from '../ui/separator';
+import { Badge } from '../ui/badge';
 
 const formSchema = z.object({
   emailAnalysisReport: z.string().min(10, 'Please provide the email analysis report.'),
@@ -139,6 +141,24 @@ export function ThreatCorrelation() {
                     <Button variant="destructive" size="sm" onClick={() => handleResponseAction('System isolation')}>Isolate Systems</Button>
                     <Button variant="outline" size="sm" onClick={() => handleResponseAction('Transaction freeze')}>Freeze Transaction</Button>
                  </div>
+            </CardContent>
+          </Card>
+          <Card className="w-full bg-muted/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                {result.verdict.toLowerCase() === 'connected' ? (
+                  <AlertCircle className="mr-2 h-5 w-5 text-destructive" />
+                ) : (
+                  <CheckCircle className="mr-2 h-5 w-5 text-green-400" />
+                )}
+                Verdict & Advice
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Badge variant={result.verdict.toLowerCase() === 'connected' ? 'destructive' : 'default'} className={result.verdict.toLowerCase() === 'unrelated' ? 'bg-green-500/20 text-green-400 border-green-500/30' : ''}>
+                {result.verdict}
+              </Badge>
+              <p className="text-sm text-muted-foreground">{result.advice}</p>
             </CardContent>
           </Card>
         </CardFooter>

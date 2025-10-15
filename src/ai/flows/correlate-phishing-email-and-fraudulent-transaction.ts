@@ -34,6 +34,8 @@ const CorrelatePhishingEmailAndFraudulentTransactionOutputSchema = z.object({
     .describe(
       'A comprehensive list of recommended actions based on the correlation analysis. Prioritize actions and provide clear, step-by-step instructions for mitigation, such as freezing accounts, blocking senders, or initiating a wider investigation.'
     ),
+  verdict: z.string().describe('A final, one-word verdict: "Connected" or "Unrelated".'),
+  advice: z.string().describe('A summary of the most critical action to take based on the correlation.'),
 });
 export type CorrelatePhishingEmailAndFraudulentTransactionOutput = z.infer<
   typeof CorrelatePhishingEmailAndFraudulentTransactionOutputSchema
@@ -65,6 +67,8 @@ const prompt = ai.definePrompt({
   For the **recommendedActions**, list 2-3 clear, actionable steps in a bulleted list:
   - **Immediate:** (e.g., Freeze account, Block sender)
   - **Follow-up:** (e.g., Initiate wider investigation)
+
+  Finally, provide a definitive **verdict** ("Connected" or "Unrelated") and concise **advice** summarizing the most critical action to take.
   `,
 });
 

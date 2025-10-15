@@ -30,6 +30,8 @@ const ScanUrlForThreatsOutputSchema = z.object({
     .describe(
       'A detailed summary of the findings from the URL scan, explaining the reasoning and specific red flags identified.'
     ),
+  verdict: z.string().describe('A final, one-word verdict: "Safe" or "Malicious".'),
+  advice: z.string().describe('Clear, actionable advice for the user based on the verdict.'),
 });
 export type ScanUrlForThreatsOutput = z.infer<typeof ScanUrlForThreatsOutputSchema>;
 
@@ -50,6 +52,8 @@ const prompt = ai.definePrompt({
   Provide a concise summary explaining your reasoning. Your output should be a single block of text.
   - **Analysis:** Briefly explain your conclusion.
   - **Red Flags:** Use a bulleted list for 1-2 red flags if malicious, otherwise "None".
+
+  Finally, provide a definitive **verdict** ("Safe" or "Malicious") and actionable **advice** (e.g., "Avoid this site and do not enter any personal information." or "This URL appears safe to visit.").
   `,
 });
 

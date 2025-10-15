@@ -12,9 +12,10 @@ import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
 import { analyzeFraudAction } from '@/app/analysis/actions';
 import { type EnhanceFraudAlertOutput } from '@/ai/flows/enhance-fraud-alerts-with-explanations';
-import { Loader2, ShieldAlert } from 'lucide-react';
+import { Loader2, ShieldAlert, CheckCircle, AlertCircle } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useAnalysisHistory } from '@/hooks/use-analysis-history';
+import { Separator } from '../ui/separator';
 
 const formSchema = z.object({
   transactionDetails: z.string().min(10, 'Please provide more transaction details.'),
@@ -151,8 +152,26 @@ export function FraudDetection() {
                 </Badge>
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
               <div className="text-sm prose-sm prose-p:m-0 prose-ul:m-0 prose-li:m-0" dangerouslySetInnerHTML={{ __html: result.explanation.replace(/\n/g, '<br />') }} />
+              <Separator />
+               <div className="space-y-2">
+                <h4 className="flex items-center font-semibold">
+                  {result.verdict.toLowerCase() === 'fraudulent' ? (
+                    <AlertCircle className="mr-2 h-5 w-5 text-destructive" />
+                  ) : (
+                    <CheckCircle className="mr-2 h-5 w-5 text-green-400" />
+                  )}
+                  Verdict
+                </h4>
+                <Badge variant={result.verdict.toLowerCase() === 'fraudulent' ? 'destructive' : 'default'} className={result.verdict.toLowerCase() === 'genuine' ? 'bg-green-500/20 text-green-400 border-green-500/30' : ''}>
+                  {result.verdict}
+                </Badge>
+              </div>
+               <div className="space-y-2">
+                <h4 className="font-semibold">Advice</h4>
+                <p className="text-sm text-muted-foreground">{result.advice}</p>
+              </div>
             </CardContent>
           </Card>
         </CardFooter>

@@ -7,8 +7,10 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { analyzeEmailAction } from '@/app/analysis/actions';
 import { type SummarizeEmailContentOutput } from '@/ai/flows/summarize-email-content';
-import { Loader2, AlertTriangle } from 'lucide-react';
+import { Loader2, AlertTriangle, ShieldCheck, ShieldAlert, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAnalysisHistory } from '@/hooks/use-analysis-history';
+import { Badge } from '../ui/badge';
+import { Separator } from '../ui/separator';
 
 export function PhishingDetection() {
   const [emailContent, setEmailContent] = useState('');
@@ -83,8 +85,26 @@ export function PhishingDetection() {
                 Threat Assessment
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
               <div className="text-sm prose-sm prose-p:m-0 prose-ul:m-0 prose-li:m-0" dangerouslySetInnerHTML={{ __html: result.summary.replace(/\n/g, '<br />') }} />
+              <Separator />
+              <div className="space-y-2">
+                <h4 className="flex items-center font-semibold">
+                  {result.verdict.toLowerCase() === 'malicious' ? (
+                    <AlertCircle className="mr-2 h-5 w-5 text-destructive" />
+                  ) : (
+                    <CheckCircle className="mr-2 h-5 w-5 text-green-400" />
+                  )}
+                  Verdict
+                </h4>
+                <Badge variant={result.verdict.toLowerCase() === 'malicious' ? 'destructive' : 'default'} className={result.verdict.toLowerCase() === 'safe' ? 'bg-green-500/20 text-green-400 border-green-500/30' : ''}>
+                  {result.verdict}
+                </Badge>
+              </div>
+               <div className="space-y-2">
+                <h4 className="font-semibold">Advice</h4>
+                <p className="text-sm text-muted-foreground">{result.advice}</p>
+              </div>
             </CardContent>
           </Card>
         </CardFooter>

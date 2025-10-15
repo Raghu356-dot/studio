@@ -28,6 +28,8 @@ const EnhanceFraudAlertOutputSchema = z.object({
       'A detailed, human-readable explanation of why the transaction was flagged as potentially fraudulent. Reference specific data points from the transaction and user profile to support your analysis.'
     ),
   riskLevel: z.string().describe('The risk level associated with the transaction (e.g., low, medium, high).'),
+  verdict: z.string().describe('A final, one-word verdict: "Genuine" or "Fraudulent".'),
+  advice: z.string().describe('Clear, actionable advice for the user based on the verdict.'),
 });
 export type EnhanceFraudAlertOutput = z.infer<typeof EnhanceFraudAlertOutputSchema>;
 
@@ -39,7 +41,7 @@ const prompt = ai.definePrompt({
   name: 'enhanceFraudAlertPrompt',
   input: {schema: EnhanceFraudAlertInputSchema},
   output: {schema: EnhanceFraudAlertOutputSchema},
-  prompt: `You are an expert fraud detection analyst. Given the following transaction details, user profile, and anomaly score, provide a concise explanation of why the transaction was flagged and determine a risk level.
+  prompt: `You are an expert fraud detection analyst. Given the following transaction details, user profile, and anomaly score, provide a concise explanation, a risk level, a final verdict, and actionable advice.
 
 Transaction Details: {{{transactionDetails}}}
 User Profile: {{{userProfile}}}
@@ -48,6 +50,8 @@ Anomaly Score: {{{anomalyScore}}}
 Your output should be a single block of text using markdown and include:
 - **Key Factors:** Use a bulleted list for the top 2-3 factors contributing to the risk (e.g., unusual location, high amount, new device).
 - **Behavioral Analysis:** Briefly note if this deviates from the user's typical behavior.
+
+Finally, provide a definitive **verdict** ("Genuine" or "Fraudulent") and actionable **advice** (e.g., "Contact the user to verify this transaction." or "This transaction appears normal.").
 `,
 });
 
