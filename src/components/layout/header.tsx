@@ -36,7 +36,6 @@ export function AppHeader() {
             className="overflow-hidden rounded-full"
           >
             <Avatar>
-              <AvatarImage src="https://picsum.photos/seed/avatar/40/40" alt="User Avatar" />
               <AvatarFallback>
                 <CircleUser />
               </AvatarFallback>
