@@ -56,8 +56,8 @@ export function RecentAlerts() {
               </div>
             </TooltipTrigger>
             <TooltipContent side="left">
-              <div className="text-sm">
-                <p>
+              <div className="text-sm space-y-1">
+                <div className="flex items-center gap-1.5">
                   <strong>Severity:</strong>{' '}
                   <Badge
                     variant="outline"
@@ -65,7 +65,7 @@ export function RecentAlerts() {
                   >
                     {alert.severity}
                   </Badge>
-                </p>
+                </div>
                 <p>
                   <strong>Source:</strong> {alert.source}
                 </p>
