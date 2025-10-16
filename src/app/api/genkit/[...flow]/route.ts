@@ -1,4 +1,3 @@
-'use server';
 import { runFlow } from '@genkit-ai/next';
 
 // Import all flows that should be exposed via the API route.
