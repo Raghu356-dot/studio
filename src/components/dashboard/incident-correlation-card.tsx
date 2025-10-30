@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -9,16 +10,17 @@ import { useToast } from "@/hooks/use-toast";
 import type { Incident } from "@/lib/types";
 import { summarizeSecurityIncidents, type SummarizeSecurityIncidentsOutput } from "@/ai/flows/summarize-security-incidents";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useIncidents } from "@/context/incidents-context";
 
 type IncidentCorrelationCardProps = {
-  incidents: Incident[];
   className?: string;
 };
 
-export function IncidentCorrelationCard({ incidents, className }: IncidentCorrelationCardProps) {
+export function IncidentCorrelationCard({ className }: IncidentCorrelationCardProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<SummarizeSecurityIncidentsOutput | null>(null);
   const { toast } = useToast();
+  const { incidents } = useIncidents();
 
   async function handleCorrelate() {
     if (incidents.length === 0) {
@@ -60,7 +62,7 @@ export function IncidentCorrelationCard({ incidents, className }: IncidentCorrel
             <Combine className="w-6 h-6" />
           </div>
           <div>
-            <CardTitle>Incident Correlation Agent</CardTitle>
+            <CardTitle>Incident Commander Agent</CardTitle>
             <CardDescription>Connects events to form a complete picture.</CardDescription>
           </div>
         </div>

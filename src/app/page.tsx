@@ -7,6 +7,7 @@ import { EmailAnalysisCard } from "@/components/dashboard/email-analysis-card";
 import { UrlRiskCard } from "@/components/dashboard/url-risk-card";
 import { MalwareAnalysisCard } from "@/components/dashboard/malware-analysis-card";
 import { FraudDetectionCard } from "@/components/dashboard/fraud-detection-card";
+import { IncidentCorrelationCard } from "@/components/dashboard/incident-correlation-card";
 
 export default function Home() {
   const { addIncident } = useIncidents();
@@ -21,11 +22,12 @@ export default function Home() {
 
       <div className="space-y-4">
         <h3 className="text-2xl font-semibold tracking-tight">Analysis Tools</h3>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
           <EmailAnalysisCard onNewIncident={handleNewIncident} />
           <UrlRiskCard onNewIncident={handleNewIncident} />
           <MalwareAnalysisCard onNewIncident={handleNewIncident} />
           <FraudDetectionCard onNewIncident={handleNewIncident} />
+          <IncidentCorrelationCard />
         </div>
       </div>
     </div>
