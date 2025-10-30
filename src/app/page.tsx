@@ -27,12 +27,17 @@ export default function Home() {
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <DashboardHeader />
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <EmailAnalysisCard onNewIncident={handleNewIncident} className="lg:col-span-2" />
-        <UrlRiskCard onNewIncident={handleNewIncident} />
-        <MalwareAnalysisCard onNewIncident={handleNewIncident} />
-        <FraudDetectionCard onNewIncident={handleNewIncident} className="lg:col-span-2" />
+
+      <div className="space-y-4">
+        <h3 className="text-2xl font-semibold tracking-tight">Analysis Tools</h3>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <EmailAnalysisCard onNewIncident={handleNewIncident} />
+          <UrlRiskCard onNewIncident={handleNewIncident} />
+          <MalwareAnalysisCard onNewIncident={handleNewIncident} />
+          <FraudDetectionCard onNewIncident={handleNewIncident} />
+        </div>
       </div>
+      
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
         <ThreatDashboard incidents={incidents} className="lg:col-span-4" />
         <IncidentCorrelationCard incidents={incidents} className="lg:col-span-3" />
