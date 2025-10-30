@@ -20,7 +20,7 @@ const AssessUrlRiskOutputSchema = z.object({
   riskLevel: z
     .string()
     .describe(
-      'The risk level of the URL (e.g., low, medium, high, critical).'n
+      'The risk level of the URL (e.g., low, medium, high, critical).'
     ),
   reason: z
     .string()
