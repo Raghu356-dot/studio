@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { AppLayout } from '@/components/layout/app-layout';
+import { IncidentsProvider } from '@/context/incidents-context';
 
 export const metadata: Metadata = {
   title: 'SecureFlow AI',
@@ -21,9 +22,11 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        <AppLayout>
-          {children}
-        </AppLayout>
+        <IncidentsProvider>
+          <AppLayout>
+            {children}
+          </AppLayout>
+        </IncidentsProvider>
         <Toaster />
       </body>
     </html>
