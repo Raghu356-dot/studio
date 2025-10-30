@@ -24,12 +24,14 @@ export default function Home() {
 
       <div className="space-y-4">
         <h3 className="text-2xl font-semibold tracking-tight">Analysis Tools</h3>
-        <Accordion type="single" collapsible className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 items-start">
-          <EmailAnalysisCard onNewIncident={handleNewIncident} />
-          <UrlRiskCard onNewIncident={handleNewIncident} />
-          <MalwareAnalysisCard onNewIncident={handleNewIncident} />
-          <FraudDetectionCard onNewIncident={handleNewIncident} />
-          <IncidentCorrelationCard />
+        <Accordion type="single" collapsible className="w-full">
+          <div className="flex flex-row items-start gap-4">
+            <EmailAnalysisCard onNewIncident={handleNewIncident} />
+            <UrlRiskCard onNewIncident={handleNewIncident} />
+            <MalwareAnalysisCard onNewIncident={handleNewIncident} />
+            <FraudDetectionCard onNewIncident={handleNewIncident} />
+            <IncidentCorrelationCard />
+          </div>
         </Accordion>
       </div>
     </div>

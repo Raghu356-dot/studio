@@ -12,7 +12,7 @@ interface AgentCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function AgentCard({ title, description, icon, children, value, className }: AgentCardProps) {
   return (
-    <AccordionItem value={value} className={cn("border-b-0", className)}>
+    <AccordionItem value={value} className={cn("border-b-0 flex-1", className)}>
       <Card className="flex flex-col h-full">
         <AccordionTrigger className="hover:no-underline">
           <CardHeader className="flex-1 text-left">
