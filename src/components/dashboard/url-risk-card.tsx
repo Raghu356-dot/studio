@@ -15,7 +15,7 @@ import { assessUrlRisk, type AssessUrlRiskOutput } from "@/ai/flows/assess-url-r
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const formSchema = z.object({
-  url: z.string().url("Please enter a valid URL."),
+  url: z.string().trim().url("Please enter a valid URL."),
 });
 
 type UrlRiskCardProps = {
