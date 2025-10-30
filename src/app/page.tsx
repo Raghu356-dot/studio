@@ -22,7 +22,7 @@ export default function Home() {
 
       <div className="space-y-4">
         <h3 className="text-2xl font-semibold tracking-tight">Analysis Tools</h3>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="grid gap-4 grid-cols-5">
             <EmailAnalysisCard onNewIncident={handleNewIncident} className="h-full" />
             <UrlRiskCard onNewIncident={handleNewIncident} className="h-full" />
             <MalwareAnalysisCard onNewIncident={handleNewIncident} className="h-full" />
