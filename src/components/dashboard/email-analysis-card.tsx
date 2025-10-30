@@ -79,6 +79,7 @@ export function EmailAnalysisCard({ onNewIncident, className }: EmailAnalysisCar
       title="Email Analysis Agent"
       description="Scans emails for phishing and scams."
       icon={<Mail className="w-6 h-6" />}
+      value="email-analysis"
       className={className}
     >
       <Form {...form}>
@@ -90,7 +91,7 @@ export function EmailAnalysisCard({ onNewIncident, className }: EmailAnalysisCar
               <FormItem className="flex-grow flex flex-col">
                 <FormLabel>Email Content</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Paste the full email content here..." {...field} className="flex-grow resize-none" />
+                  <Textarea placeholder="Paste the full email content here..." {...field} className="flex-grow resize-none h-32" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

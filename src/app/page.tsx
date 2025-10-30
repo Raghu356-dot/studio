@@ -8,6 +8,8 @@ import { UrlRiskCard } from "@/components/dashboard/url-risk-card";
 import { MalwareAnalysisCard } from "@/components/dashboard/malware-analysis-card";
 import { FraudDetectionCard } from "@/components/dashboard/fraud-detection-card";
 import { IncidentCorrelationCard } from "@/components/dashboard/incident-correlation-card";
+import { Accordion } from "@/components/ui/accordion";
+
 
 export default function Home() {
   const { addIncident } = useIncidents();
@@ -22,13 +24,13 @@ export default function Home() {
 
       <div className="space-y-4">
         <h3 className="text-2xl font-semibold tracking-tight">Analysis Tools</h3>
-        <div className="flex gap-4">
-            <EmailAnalysisCard onNewIncident={handleNewIncident} className="flex-1" />
-            <UrlRiskCard onNewIncident={handleNewIncident} className="flex-1" />
-            <MalwareAnalysisCard onNewIncident={handleNewIncident} className="flex-1" />
-            <FraudDetectionCard onNewIncident={handleNewIncident} className="flex-1" />
-            <IncidentCorrelationCard className="flex-1" />
-        </div>
+        <Accordion type="single" collapsible className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 items-start">
+          <EmailAnalysisCard onNewIncident={handleNewIncident} />
+          <UrlRiskCard onNewIncident={handleNewIncident} />
+          <MalwareAnalysisCard onNewIncident={handleNewIncident} />
+          <FraudDetectionCard onNewIncident={handleNewIncident} />
+          <IncidentCorrelationCard />
+        </Accordion>
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import type { Incident } from "@/lib/types";
 import { summarizeSecurityIncidents, type SummarizeSecurityIncidentsOutput } from "@/ai/flows/summarize-security-incidents";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useIncidents } from "@/context/incidents-context";
+import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 type IncidentCorrelationCardProps = {
   className?: string;
@@ -55,41 +56,47 @@ export function IncidentCorrelationCard({ className }: IncidentCorrelationCardPr
   }
 
   return (
-    <Card className={className}>
-      <CardHeader>
-        <div className="flex items-center gap-4">
-          <div className="bg-primary/10 p-3 rounded-lg text-primary">
-            <Combine className="w-6 h-6" />
-          </div>
-          <div>
-            <CardTitle>Incident Commander Agent</CardTitle>
-            <CardDescription>Connects events to form a complete picture.</CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <Button onClick={handleCorrelate} disabled={isLoading || incidents.length === 0} className="w-full">
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Correlate Incidents
-          </Button>
-          
-          <ScrollArea className="h-72 w-full">
-            {result ? (
-              <Alert>
-                <AlertTitle>Correlation Summary</AlertTitle>
-                <AlertDescription className="prose prose-sm dark:prose-invert whitespace-pre-wrap">
-                  {result.summary}
-                </AlertDescription>
-              </Alert>
-            ) : (
-                <div className="flex items-center justify-center h-full text-muted-foreground">
-                    <p>Click the button to generate an intelligence summary.</p>
+    <AccordionItem value="incident-commander" className="border-b-0">
+       <Card className={className}>
+        <AccordionTrigger className="hover:no-underline">
+            <CardHeader className="text-left">
+                <div className="flex items-center gap-4">
+                    <div className="bg-primary/10 p-3 rounded-lg text-primary">
+                        <Combine className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <CardTitle>Incident Commander Agent</CardTitle>
+                        <CardDescription>Connects events to form a complete picture.</CardDescription>
+                    </div>
                 </div>
-            )}
-          </ScrollArea>
-        </div>
-      </CardContent>
-    </Card>
+            </CardHeader>
+        </AccordionTrigger>
+        <AccordionContent>
+            <CardContent>
+                <div className="space-y-4">
+                <Button onClick={handleCorrelate} disabled={isLoading || incidents.length === 0} className="w-full">
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Correlate Incidents
+                </Button>
+                
+                <ScrollArea className="h-72 w-full">
+                    {result ? (
+                    <Alert>
+                        <AlertTitle>Correlation Summary</AlertTitle>
+                        <AlertDescription className="prose prose-sm dark:prose-invert whitespace-pre-wrap">
+                        {result.summary}
+                        </AlertDescription>
+                    </Alert>
+                    ) : (
+                        <div className="flex items-center justify-center h-full text-muted-foreground">
+                            <p>Click the button to generate an intelligence summary.</p>
+                        </div>
+                    )}
+                </ScrollArea>
+                </div>
+            </CardContent>
+        </AccordionContent>
+       </Card>
+    </AccordionItem>
   );
 }

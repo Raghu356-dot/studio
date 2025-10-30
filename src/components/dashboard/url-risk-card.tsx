@@ -79,6 +79,7 @@ export function UrlRiskCard({ onNewIncident, className }: UrlRiskCardProps) {
       title="URL Risk Agent"
       description="Checks links for malicious content."
       icon={<Link className="w-6 h-6" />}
+      value="url-risk"
       className={className}
     >
       <Form {...form}>

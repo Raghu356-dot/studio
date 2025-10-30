@@ -69,6 +69,7 @@ export function FraudDetectionCard({ onNewIncident, className }: FraudDetectionC
       title="Fraud Detection Agent"
       description="Reviews transactions for fraud."
       icon={<Banknote className="w-6 h-6" />}
+      value="fraud-detection"
       className={className}
     >
       <Form {...form}>
@@ -80,7 +81,7 @@ export function FraudDetectionCard({ onNewIncident, className }: FraudDetectionC
               <FormItem className="flex-grow flex flex-col">
                 <FormLabel>Transaction Data</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Paste transaction logs or data here..." {...field} className="flex-grow resize-none"/>
+                  <Textarea placeholder="Paste transaction logs or data here..." {...field} className="flex-grow resize-none h-32"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
