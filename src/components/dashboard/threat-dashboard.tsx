@@ -53,12 +53,7 @@ function IncidentDetails({ incident }: { incident: Incident }) {
 export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) {
   
   const sortedIncidents = [...incidents].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-  const [openIncident, setOpenIncident] = useState<string | null>(null);
-
-  const handleToggle = (id: string) => {
-    setOpenIncident(prev => (prev === id ? null : id));
-  };
-
+  const [openIncidentId, setOpenIncidentId] = useState<string | null>(null);
 
   return (
     <Card className={cn("flex flex-col", className)}>
@@ -88,30 +83,31 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
             <TableBody>
               {sortedIncidents.length > 0 ? (
                 sortedIncidents.map((incident) => (
-                  <Fragment key={incident.id}>
-                    <Collapsible asChild trigger={
-                      <TableRow className="animate-in fade-in-50 cursor-pointer" onClick={() => handleToggle(incident.id)}>
-                        <TableCell>
-                          <div className="flex items-center gap-2 font-medium">
-                            {agentIcons[incident.agent]}
-                            {incident.agent}
-                          </div>
-                        </TableCell>
-                        <TableCell>{incident.finding}</TableCell>
-                        <TableCell className="text-center">
-                          <Badge variant="secondary" className="capitalize flex items-center gap-1.5">
-                            <span className={cn("h-2 w-2 rounded-full", riskColors[incident.riskLevel])} />
-                            {incident.riskLevel}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{new Date(incident.timestamp).toLocaleString()}</TableCell>
-                        <TableCell>
-                            <button className="p-1">
-                              <ChevronDown className={cn("h-4 w-4 transition-transform", openIncident === incident.id && "rotate-180")} />
-                            </button>
-                        </TableCell>
-                      </TableRow>
-                    }>
+                  <Collapsible asChild key={incident.id} open={openIncidentId === incident.id} onOpenChange={(isOpen) => setOpenIncidentId(isOpen ? incident.id : null)}>
+                    <Fragment>
+                      <CollapsibleTrigger asChild>
+                        <TableRow className="animate-in fade-in-50 cursor-pointer">
+                          <TableCell>
+                            <div className="flex items-center gap-2 font-medium">
+                              {agentIcons[incident.agent]}
+                              {incident.agent}
+                            </div>
+                          </TableCell>
+                          <TableCell>{incident.finding}</TableCell>
+                          <TableCell className="text-center">
+                            <Badge variant="secondary" className="capitalize flex items-center gap-1.5">
+                              <span className={cn("h-2 w-2 rounded-full", riskColors[incident.riskLevel])} />
+                              {incident.riskLevel}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{new Date(incident.timestamp).toLocaleString()}</TableCell>
+                          <TableCell>
+                              <button className="p-1">
+                                <ChevronDown className={cn("h-4 w-4 transition-transform", openIncidentId === incident.id && "rotate-180")} />
+                              </button>
+                          </TableCell>
+                        </TableRow>
+                      </CollapsibleTrigger>
                       <CollapsibleContent asChild>
                          <tr className="bg-muted/20 hover:bg-muted/20">
                             <TableCell colSpan={5} className="p-0">
@@ -119,8 +115,8 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
                             </TableCell>
                          </tr>
                       </CollapsibleContent>
-                    </Collapsible>
-                  </Fragment>
+                    </Fragment>
+                  </Collapsible>
                 ))
               ) : (
                 <TableRow>

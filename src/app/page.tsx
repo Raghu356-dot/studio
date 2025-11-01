@@ -13,8 +13,13 @@ import { Incident } from "@/lib/types";
 import { AutonomousModeCard } from "@/components/dashboard/autonomous-mode-card";
 
 
+function DashboardWrapper() {
+  const { incidents } = useIncidents();
+  return <ThreatDashboard incidents={incidents} />;
+}
+
 export default function Home() {
-  const { incidents, addIncident } = useIncidents();
+  const { addIncident } = useIncidents();
 
   const handleNewIncident = (newIncident: Omit<Incident, 'id' | 'timestamp'>) => {
     addIncident(newIncident);
@@ -79,7 +84,7 @@ export default function Home() {
       </Tabs>
       
       <div className="pt-6">
-        <ThreatDashboard incidents={incidents} />
+        <DashboardWrapper />
       </div>
     </div>
   );
