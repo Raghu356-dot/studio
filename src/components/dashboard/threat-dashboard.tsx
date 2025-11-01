@@ -1,3 +1,4 @@
+
 "use client";
 
 import { AlertTriangle, Badge, File, Link, Mail, Banknote, ChevronDown } from "lucide-react";
@@ -84,7 +85,7 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
               {sortedIncidents.length > 0 ? (
                 sortedIncidents.map((incident) => (
                   <Collapsible asChild key={incident.id} open={openIncidentId === incident.id} onOpenChange={(isOpen) => setOpenIncidentId(isOpen ? incident.id : null)}>
-                    <Fragment>
+                    <tbody>
                       <CollapsibleTrigger asChild>
                         <TableRow className="animate-in fade-in-50 cursor-pointer">
                           <TableCell>
@@ -115,7 +116,7 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
                             </TableCell>
                          </tr>
                       </CollapsibleContent>
-                    </Fragment>
+                    </tbody>
                   </Collapsible>
                 ))
               ) : (
