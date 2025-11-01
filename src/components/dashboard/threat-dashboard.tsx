@@ -85,7 +85,7 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
               {sortedIncidents.length > 0 ? (
                 sortedIncidents.map((incident) => (
                   <Collapsible asChild key={incident.id} open={openIncidentId === incident.id} onOpenChange={(isOpen) => setOpenIncidentId(isOpen ? incident.id : null)}>
-                    <tbody>
+                    <Fragment>
                       <CollapsibleTrigger asChild>
                         <TableRow className="animate-in fade-in-50 cursor-pointer">
                           <TableCell>
@@ -116,7 +116,7 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
                             </TableCell>
                          </tr>
                       </CollapsibleContent>
-                    </tbody>
+                    </Fragment>
                   </Collapsible>
                 ))
               ) : (
