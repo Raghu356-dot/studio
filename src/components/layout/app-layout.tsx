@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/icons";
-import { LayoutDashboard, ShieldAlert } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 import { usePathname } from 'next/navigation';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
@@ -25,7 +25,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-2.5 p-2">
               <Logo className="w-8 h-8 text-accent" />
               <span className="font-bold text-lg text-sidebar-foreground group-data-[collapsible=icon]:hidden">
-                AI Security
               </span>
             </div>
           </SidebarHeader>

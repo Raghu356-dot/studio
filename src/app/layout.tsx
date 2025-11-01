@@ -5,7 +5,7 @@ import { AppLayout } from '@/components/layout/app-layout';
 import { IncidentsProvider } from '@/context/incidents-context';
 
 export const metadata: Metadata = {
-  title: 'Cybersecurity AI',
+  title: 'Dashboard',
   description: 'An intelligent multi-agent system for cybersecurity threat detection.',
 };
 
