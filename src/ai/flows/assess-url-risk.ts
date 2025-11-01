@@ -18,9 +18,9 @@ export type AssessUrlRiskInput = z.infer<typeof AssessUrlRiskInputSchema>;
 
 const AssessUrlRiskOutputSchema = z.object({
   riskLevel: z
-    .string()
+    .enum(['info', 'low', 'medium', 'high', 'critical'])
     .describe(
-      'The risk level of the URL (e.g., low, medium, high, critical).'
+      'The risk level of the URL (info, low, medium, high, critical).'
     ),
   reason: z
     .string()

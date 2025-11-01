@@ -1,17 +1,14 @@
-
 "use client";
 
 import { useState } from "react";
-import { Combine, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
-import type { Incident } from "@/lib/types";
 import { summarizeSecurityIncidents, type SummarizeSecurityIncidentsOutput } from "@/ai/flows/summarize-security-incidents";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useIncidents } from "@/context/incidents-context";
-import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 type IncidentCorrelationCardProps = {
   className?: string;
@@ -56,47 +53,40 @@ export function IncidentCorrelationCard({ className }: IncidentCorrelationCardPr
   }
 
   return (
-    <AccordionItem value="incident-commander" className="border-b-0">
-       <Card className={className}>
-        <AccordionTrigger className="hover:no-underline">
-            <CardHeader className="text-left">
-                <div className="flex items-center gap-4">
-                    <div className="bg-primary/10 p-3 rounded-lg text-primary">
-                        <Combine className="w-6 h-6" />
-                    </div>
-                    <div>
-                        <CardTitle>Incident Commander Agent</CardTitle>
-                        <CardDescription>Connects events to form a complete picture.</CardDescription>
-                    </div>
-                </div>
-            </CardHeader>
-        </AccordionTrigger>
-        <AccordionContent>
-            <CardContent>
-                <div className="space-y-4">
-                <Button onClick={handleCorrelate} disabled={isLoading || incidents.length === 0} className="w-full">
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Correlate Incidents
-                </Button>
-                
-                <ScrollArea className="h-72 w-full">
-                    {result ? (
-                    <Alert>
-                        <AlertTitle>Correlation Summary</AlertTitle>
-                        <AlertDescription className="prose prose-sm dark:prose-invert whitespace-pre-wrap">
-                        {result.summary}
-                        </AlertDescription>
-                    </Alert>
-                    ) : (
-                        <div className="flex items-center justify-center h-full text-muted-foreground">
-                            <p>Click the button to generate an intelligence summary.</p>
-                        </div>
-                    )}
-                </ScrollArea>
-                </div>
-            </CardContent>
-        </AccordionContent>
-       </Card>
-    </AccordionItem>
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>Threat Correlation</CardTitle>
+        <CardDescription>
+          Analyzes all detected incidents to find connections and provide a high-level summary of the threat landscape.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <Button onClick={handleCorrelate} disabled={isLoading || incidents.length === 0} className="w-full">
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Correlate Incidents & Generate Summary
+          </Button>
+          
+          <ScrollArea className="h-72 w-full rounded-md border p-4">
+            {result ? (
+              <Alert>
+                <AlertTitle>Correlation Summary</AlertTitle>
+                <AlertDescription className="prose prose-sm dark:prose-invert whitespace-pre-wrap mt-2">
+                  {result.summary}
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <div className="flex h-full items-center justify-center text-center text-muted-foreground">
+                <p>
+                  {incidents.length > 0
+                    ? `Ready to analyze ${incidents.length} incident(s). Click the button to generate an intelligence summary.`
+                    : "Run other analysis tools first to generate incidents."}
+                </p>
+              </div>
+            )}
+          </ScrollArea>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

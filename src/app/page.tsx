@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useIncidents } from "@/context/incidents-context";
 import type { Incident } from "@/lib/types";
 import { DashboardHeader } from "@/components/dashboard/header";
@@ -8,7 +9,8 @@ import { UrlRiskCard } from "@/components/dashboard/url-risk-card";
 import { MalwareAnalysisCard } from "@/components/dashboard/malware-analysis-card";
 import { FraudDetectionCard } from "@/components/dashboard/fraud-detection-card";
 import { IncidentCorrelationCard } from "@/components/dashboard/incident-correlation-card";
-import { Accordion } from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Banknote, Combine, File, Link, Mail } from "lucide-react";
 
 
 export default function Home() {
@@ -20,20 +22,54 @@ export default function Home() {
 
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      <DashboardHeader />
-
-      <div className="space-y-4">
-        <h3 className="text-2xl font-semibold tracking-tight">Analysis Tools</h3>
-        <Accordion type="single" collapsible className="w-full">
-          <div className="flex flex-row items-start gap-4">
-            <EmailAnalysisCard onNewIncident={handleNewIncident} />
-            <UrlRiskCard onNewIncident={handleNewIncident} />
-            <MalwareAnalysisCard onNewIncident={handleNewIncident} />
-            <FraudDetectionCard onNewIncident={handleNewIncident} />
-            <IncidentCorrelationCard />
-          </div>
-        </Accordion>
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Analysis Tools</h2>
+          <p className="text-muted-foreground">
+            Leverage specialized AI agents to detect, analyze, and respond to cybersecurity threats.
+          </p>
+        </div>
       </div>
+
+      <Tabs defaultValue="email" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="email">
+            <Mail className="mr-2 h-4 w-4" />
+            Phishing Detection
+          </TabsTrigger>
+          <TabsTrigger value="fraud">
+             <Banknote className="mr-2 h-4 w-4" />
+            Fraud Detection
+          </TabsTrigger>
+          <TabsTrigger value="correlation">
+             <Combine className="mr-2 h-4 w-4" />
+            Threat Correlation
+          </TabsTrigger>
+          <TabsTrigger value="url">
+            <Link className="mr-2 h-4 w-4" />
+            URL Scanning
+          </TabsTrigger>
+          <TabsTrigger value="malware">
+             <File className="mr-2 h-4 w-4" />
+            Malware Analysis
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="email">
+          <EmailAnalysisCard onNewIncident={handleNewIncident} />
+        </TabsContent>
+        <TabsContent value="fraud">
+          <FraudDetectionCard onNewIncident={handleNewIncident} />
+        </TabsContent>
+        <TabsContent value="correlation">
+          <IncidentCorrelationCard />
+        </TabsContent>
+        <TabsContent value="url">
+          <UrlRiskCard onNewIncident={handleNewIncident} />
+        </TabsContent>
+        <TabsContent value="malware">
+          <MalwareAnalysisCard onNewIncident={handleNewIncident} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

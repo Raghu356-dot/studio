@@ -4,15 +4,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Link, AlertTriangle, ShieldCheck, Loader2 } from "lucide-react";
-import { AgentCard } from "./agent-card";
+import { AlertTriangle, ShieldCheck, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import type { Incident, IncidentRiskLevel } from "@/lib/types";
 import { assessUrlRisk, type AssessUrlRiskOutput } from "@/ai/flows/assess-url-risk";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+
 
 const formSchema = z.object({
   url: z.string().trim().url("Please enter a valid URL."),
@@ -42,7 +43,7 @@ export function UrlRiskCard({ onNewIncident, className }: UrlRiskCardProps) {
       const analysisResult = await assessUrlRisk({ url: values.url });
       setResult(analysisResult);
 
-      if (analysisResult.riskLevel.toLowerCase() !== 'low') {
+      if (analysisResult.riskLevel.toLowerCase() !== 'low' && analysisResult.riskLevel.toLowerCase() !== 'info') {
         onNewIncident({
           agent: 'URL',
           riskLevel: analysisResult.riskLevel.toLowerCase() as IncidentRiskLevel,
@@ -75,34 +76,34 @@ export function UrlRiskCard({ onNewIncident, className }: UrlRiskCardProps) {
   };
 
   return (
-    <AgentCard
-      title="URL Risk Agent"
-      description="Checks links for malicious content."
-      icon={<Link className="w-6 h-6" />}
-      value="url-risk"
-      className={className}
-    >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="url"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Website URL</FormLabel>
-                <FormControl>
-                  <Input placeholder="https://example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" disabled={isLoading} className="w-full">
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Assess URL
-          </Button>
-        </form>
-      </Form>
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle>URL Scanning</CardTitle>
+        <CardDescription>
+          This tool analyzes URLs for malicious domains, suspicious redirects, and unsafe content. Enter a URL to assess its risk.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="url"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="https://example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={isLoading} className="w-full">
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Assess URL
+            </Button>
+          </form>
+        </Form>
        {result && (
         <Alert className="mt-4">
           <div className="flex items-center gap-2">
@@ -115,6 +116,7 @@ export function UrlRiskCard({ onNewIncident, className }: UrlRiskCardProps) {
           </AlertDescription>
         </Alert>
       )}
-    </AgentCard>
+      </CardContent>
+    </Card>
   );
 }
