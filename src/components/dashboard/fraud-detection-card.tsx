@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import type { Incident } from "@/lib/types";
+import type { Incident, IncidentRiskLevel } from "@/lib/types";
 import { detectFinancialFraud, type DetectFinancialFraudOutput } from "@/ai/flows/detect-financial-fraud";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
@@ -46,7 +46,7 @@ export function FraudDetectionCard({ onNewIncident, className }: FraudDetectionC
       if (analysisResult.isFraudulent) {
         onNewIncident({
           agent: 'Fraud',
-          riskLevel: analysisResult.confidenceScore > 0.8 ? 'critical' : 'high',
+          riskLevel: analysisResult.confidenceScore > 0.8 ? 'critical' : (analysisResult.confidenceScore > 0.6 ? 'high' : 'medium'),
           confidence: analysisResult.confidenceScore,
           finding: 'Potential fraud detected in transaction',
           details: analysisResult,

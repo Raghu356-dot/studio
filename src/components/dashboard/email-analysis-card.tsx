@@ -64,7 +64,7 @@ export function EmailAnalysisCard({ onNewIncident, className }: EmailAnalysisCar
   }
 
   const getRiskIcon = (risk: string) => {
-    switch (risk) {
+    switch (risk.toLowerCase()) {
       case 'high':
       case 'critical':
         return <AlertTriangle className="h-4 w-4 text-destructive" />;
