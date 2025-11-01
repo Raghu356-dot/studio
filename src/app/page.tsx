@@ -7,9 +7,10 @@ import { MalwareAnalysisCard } from "@/components/dashboard/malware-analysis-car
 import { FraudDetectionCard } from "@/components/dashboard/fraud-detection-card";
 import { IncidentCorrelationCard } from "@/components/dashboard/incident-correlation-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Banknote, Combine, File, Link, Mail } from "lucide-react";
+import { Banknote, Combine, File, Link, Mail, Bot } from "lucide-react";
 import { ThreatDashboard } from "@/components/dashboard/threat-dashboard";
 import { Incident } from "@/lib/types";
+import { AutonomousModeCard } from "@/components/dashboard/autonomous-mode-card";
 
 
 export default function Home() {
@@ -30,8 +31,12 @@ export default function Home() {
         </div>
       </div>
 
-      <Tabs defaultValue="email" className="space-y-4">
+      <Tabs defaultValue="autonomous" className="space-y-4">
         <TabsList>
+           <TabsTrigger value="autonomous">
+            <Bot className="mr-2 h-4 w-4" />
+            Autonomous Mode
+          </TabsTrigger>
           <TabsTrigger value="email">
             <Mail className="mr-2 h-4 w-4" />
             Phishing Detection
@@ -42,7 +47,7 @@ export default function Home() {
           </TabsTrigger>
           <TabsTrigger value="correlation">
              <Combine className="mr-2 h-4 w-4" />
-            Threat Correlation
+            Incident Commander
           </TabsTrigger>
           <TabsTrigger value="url">
             <Link className="mr-2 h-4 w-4" />
@@ -53,6 +58,9 @@ export default function Home() {
             Malware Analysis
           </TabsTrigger>
         </TabsList>
+        <TabsContent value="autonomous">
+          <AutonomousModeCard onNewIncident={handleNewIncident} />
+        </TabsContent>
         <TabsContent value="email">
           <EmailAnalysisCard onNewIncident={handleNewIncident} />
         </TabsContent>
