@@ -7,7 +7,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Incident, IncidentAgent, IncidentRiskLevel } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState, Fragment } from "react";
 
 const riskColors: Record<IncidentRiskLevel, string> = {
@@ -56,6 +55,10 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
   const sortedIncidents = [...incidents].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   const [openIncidentId, setOpenIncidentId] = useState<string | null>(null);
 
+  const handleToggle = (incidentId: string) => {
+    setOpenIncidentId(prevId => (prevId === incidentId ? null : incidentId));
+  };
+
   return (
     <Card className={cn("flex flex-col", className)}>
       <CardHeader>
@@ -84,40 +87,36 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
             <TableBody>
               {sortedIncidents.length > 0 ? (
                 sortedIncidents.map((incident) => (
-                  <Collapsible asChild key={incident.id} open={openIncidentId === incident.id} onOpenChange={(isOpen) => setOpenIncidentId(isOpen ? incident.id : null)}>
-                    <Fragment>
-                      <CollapsibleTrigger asChild>
-                        <TableRow className="animate-in fade-in-50 cursor-pointer">
-                          <TableCell>
-                            <div className="flex items-center gap-2 font-medium">
-                              {agentIcons[incident.agent]}
-                              {incident.agent}
-                            </div>
+                  <Fragment key={incident.id}>
+                    <TableRow className="animate-in fade-in-50 cursor-pointer" onClick={() => handleToggle(incident.id)}>
+                      <TableCell>
+                        <div className="flex items-center gap-2 font-medium">
+                          {agentIcons[incident.agent]}
+                          {incident.agent}
+                        </div>
+                      </TableCell>
+                      <TableCell>{incident.finding}</TableCell>
+                      <TableCell className="text-center">
+                        <Badge variant="secondary" className="capitalize flex items-center gap-1.5">
+                          <span className={cn("h-2 w-2 rounded-full", riskColors[incident.riskLevel])} />
+                          {incident.riskLevel}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{new Date(incident.timestamp).toLocaleString()}</TableCell>
+                      <TableCell>
+                          <button className="p-1">
+                            <ChevronDown className={cn("h-4 w-4 transition-transform", openIncidentId === incident.id && "rotate-180")} />
+                          </button>
+                      </TableCell>
+                    </TableRow>
+                    {openIncidentId === incident.id && (
+                       <tr className="bg-muted/20 hover:bg-muted/20">
+                          <TableCell colSpan={5} className="p-0">
+                            <IncidentDetails incident={incident} />
                           </TableCell>
-                          <TableCell>{incident.finding}</TableCell>
-                          <TableCell className="text-center">
-                            <Badge variant="secondary" className="capitalize flex items-center gap-1.5">
-                              <span className={cn("h-2 w-2 rounded-full", riskColors[incident.riskLevel])} />
-                              {incident.riskLevel}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>{new Date(incident.timestamp).toLocaleString()}</TableCell>
-                          <TableCell>
-                              <button className="p-1">
-                                <ChevronDown className={cn("h-4 w-4 transition-transform", openIncidentId === incident.id && "rotate-180")} />
-                              </button>
-                          </TableCell>
-                        </TableRow>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent asChild>
-                         <tr className="bg-muted/20 hover:bg-muted/20">
-                            <TableCell colSpan={5} className="p-0">
-                              <IncidentDetails incident={incident} />
-                            </TableCell>
-                         </tr>
-                      </CollapsibleContent>
-                    </Fragment>
-                  </Collapsible>
+                       </tr>
+                    )}
+                  </Fragment>
                 ))
               ) : (
                 <TableRow>
