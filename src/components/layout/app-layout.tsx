@@ -39,14 +39,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === '/dashboard'} tooltip="Threat Dashboard">
-                  <a href="/dashboard">
-                    <ShieldAlert />
-                    <span>Threat Dashboard</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarContent>
         </Sidebar>

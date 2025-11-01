@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import { useIncidents } from "@/context/incidents-context";
-import type { Incident } from "@/lib/types";
-import { DashboardHeader } from "@/components/dashboard/header";
 import { EmailAnalysisCard } from "@/components/dashboard/email-analysis-card";
 import { UrlRiskCard } from "@/components/dashboard/url-risk-card";
 import { MalwareAnalysisCard } from "@/components/dashboard/malware-analysis-card";
@@ -11,10 +8,12 @@ import { FraudDetectionCard } from "@/components/dashboard/fraud-detection-card"
 import { IncidentCorrelationCard } from "@/components/dashboard/incident-correlation-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Banknote, Combine, File, Link, Mail } from "lucide-react";
+import { ThreatDashboard } from "@/components/dashboard/threat-dashboard";
+import { Incident } from "@/lib/types";
 
 
 export default function Home() {
-  const { addIncident } = useIncidents();
+  const { incidents, addIncident } = useIncidents();
 
   const handleNewIncident = (newIncident: Omit<Incident, 'id' | 'timestamp'>) => {
     addIncident(newIncident);
@@ -70,6 +69,10 @@ export default function Home() {
           <MalwareAnalysisCard onNewIncident={handleNewIncident} />
         </TabsContent>
       </Tabs>
+      
+      <div className="pt-6">
+        <ThreatDashboard incidents={incidents} />
+      </div>
     </div>
   );
 }
