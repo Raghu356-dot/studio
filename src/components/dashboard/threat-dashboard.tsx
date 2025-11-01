@@ -88,8 +88,8 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
             <TableBody>
               {sortedIncidents.length > 0 ? (
                 sortedIncidents.map((incident) => (
-                  <Collapsible asChild key={incident.id} open={openIncident === incident.id} onOpenChange={() => handleToggle(incident.id)}>
-                    <Fragment>
+                  <Fragment key={incident.id}>
+                    <Collapsible asChild trigger={
                       <TableRow className="animate-in fade-in-50 cursor-pointer" onClick={() => handleToggle(incident.id)}>
                         <TableCell>
                           <div className="flex items-center gap-2 font-medium">
@@ -106,13 +106,12 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
                         </TableCell>
                         <TableCell>{new Date(incident.timestamp).toLocaleString()}</TableCell>
                         <TableCell>
-                          <CollapsibleTrigger asChild>
-                              <button className="p-1">
-                                <ChevronDown className={cn("h-4 w-4 transition-transform", openIncident === incident.id && "rotate-180")} />
-                              </button>
-                          </CollapsibleTrigger>
+                            <button className="p-1">
+                              <ChevronDown className={cn("h-4 w-4 transition-transform", openIncident === incident.id && "rotate-180")} />
+                            </button>
                         </TableCell>
                       </TableRow>
+                    }>
                       <CollapsibleContent asChild>
                          <tr className="bg-muted/20 hover:bg-muted/20">
                             <TableCell colSpan={5} className="p-0">
@@ -120,8 +119,8 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
                             </TableCell>
                          </tr>
                       </CollapsibleContent>
-                    </Fragment>
-                  </Collapsible>
+                    </Collapsible>
+                  </Fragment>
                 ))
               ) : (
                 <TableRow>
