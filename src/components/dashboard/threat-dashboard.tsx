@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Incident, IncidentAgent, IncidentRiskLevel } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 
 const riskColors: Record<IncidentRiskLevel, string> = {
   info: "bg-blue-500",
@@ -89,7 +89,7 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
               {sortedIncidents.length > 0 ? (
                 sortedIncidents.map((incident) => (
                   <Collapsible asChild key={incident.id} open={openIncident === incident.id} onOpenChange={() => handleToggle(incident.id)}>
-                    <>
+                    <Fragment>
                       <TableRow className="animate-in fade-in-50 cursor-pointer" onClick={() => handleToggle(incident.id)}>
                         <TableCell>
                           <div className="flex items-center gap-2 font-medium">
@@ -107,7 +107,9 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
                         <TableCell>{new Date(incident.timestamp).toLocaleString()}</TableCell>
                         <TableCell>
                           <CollapsibleTrigger asChild>
-                              <ChevronDown className={cn("h-4 w-4 transition-transform", openIncident === incident.id && "rotate-180")} />
+                              <button className="p-1">
+                                <ChevronDown className={cn("h-4 w-4 transition-transform", openIncident === incident.id && "rotate-180")} />
+                              </button>
                           </CollapsibleTrigger>
                         </TableCell>
                       </TableRow>
@@ -118,7 +120,7 @@ export function ThreatDashboard({ incidents, className }: ThreatDashboardProps) 
                             </TableCell>
                          </tr>
                       </CollapsibleContent>
-                    </>
+                    </Fragment>
                   </Collapsible>
                 ))
               ) : (
