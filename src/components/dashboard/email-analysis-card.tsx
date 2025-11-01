@@ -43,7 +43,7 @@ export function EmailAnalysisCard({ onNewIncident, className }: EmailAnalysisCar
       setResult(analysisResult);
 
       const risk = analysisResult.riskLevel.toLowerCase();
-      if (risk === 'medium' || risk === 'high' || risk === 'critical') {
+      if (risk === 'medium' || risk === 'high') {
         onNewIncident({
           agent: 'Email',
           riskLevel: analysisResult.riskLevel as IncidentRiskLevel,
