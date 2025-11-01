@@ -14,12 +14,13 @@ export const IncidentsProvider = ({ children }: { children: ReactNode }) => {
   const [incidents, setIncidents] = useState<Incident[]>([]);
 
   const addIncident = (newIncident: Omit<Incident, 'id' | 'timestamp'>) => {
+    const incidentToAdd: Incident = {
+      ...newIncident,
+      id: crypto.randomUUID(),
+      timestamp: new Date().toISOString(),
+    };
     setIncidents(prevIncidents => [
-      {
-        ...newIncident,
-        id: crypto.randomUUID(),
-        timestamp: new Date().toISOString(),
-      },
+      incidentToAdd,
       ...prevIncidents,
     ]);
   };
