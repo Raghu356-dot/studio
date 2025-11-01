@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -26,7 +27,7 @@ const mockData = [
   { type: 'url', content: 'http://example.com/a-normal-page' },
 ];
 
-const SIMULATION_INTERVAL = 7000; // 7 seconds
+const SIMULATION_INTERVAL = 15000; // 15 seconds
 
 type AutonomousModeCardProps = {
   onNewIncident: (incident: Omit<Incident, 'id' | 'timestamp'>) => void;
@@ -89,7 +90,7 @@ export function AutonomousModeCard({ onNewIncident, className }: AutonomousModeC
             agent: 'Email',
             riskLevel: analysisResult.riskLevel as IncidentRiskLevel,
             finding: 'Autonomous: Phishing attempt detected',
-            details: analysisResult,
+            details: { emailContent: item.content, ...analysisResult },
           });
         }
       } else if (item.type === 'url') {
