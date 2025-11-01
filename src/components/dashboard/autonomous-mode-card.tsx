@@ -82,8 +82,9 @@ export function AutonomousModeCard({ onNewIncident, className }: AutonomousModeC
       if (item.type === 'email') {
         setCurrentActivity(`(${dataIndexRef.current}/${mockData.length}) Analyzing email: "${item.content.substring(0, 50)}..."`);
         const analysisResult = await analyzeEmailForPhishing({ emailContent: item.content });
+        const risk = analysisResult.riskLevel.toLowerCase();
         
-        if (analysisResult.riskLevel === 'medium' || analysisResult.riskLevel === 'high') {
+        if (risk === 'medium' || risk === 'high' || risk === 'critical') {
           onNewIncident({
             agent: 'Email',
             riskLevel: analysisResult.riskLevel as IncidentRiskLevel,
@@ -94,8 +95,9 @@ export function AutonomousModeCard({ onNewIncident, className }: AutonomousModeC
       } else if (item.type === 'url') {
         setCurrentActivity(`(${dataIndexRef.current}/${mockData.length}) Scanning URL: ${item.content}`);
         const analysisResult = await assessUrlRisk({ url: item.content });
+        const risk = analysisResult.riskLevel.toLowerCase();
 
-        if (analysisResult.riskLevel === 'medium' || analysisResult.riskLevel === 'high' || analysisResult.riskLevel === 'critical') {
+        if (risk === 'medium' || risk === 'high' || risk === 'critical') {
           onNewIncident({
             agent: 'URL',
             riskLevel: analysisResult.riskLevel.toLowerCase() as IncidentRiskLevel,
