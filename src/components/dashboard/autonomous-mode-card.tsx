@@ -88,7 +88,7 @@ export function AutonomousModeCard({ onNewIncident, className }: AutonomousModeC
         if (risk === 'medium' || risk === 'high' || risk === 'critical') {
           onNewIncident({
             agent: 'Email',
-            riskLevel: analysisResult.riskLevel as IncidentRiskLevel,
+            riskLevel: analysisResult.riskLevel.toLowerCase() as IncidentRiskLevel,
             finding: 'Autonomous: Phishing attempt detected',
             details: { emailContent: item.content, ...analysisResult },
           });

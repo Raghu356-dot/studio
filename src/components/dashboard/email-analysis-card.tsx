@@ -43,12 +43,12 @@ export function EmailAnalysisCard({ onNewIncident, className }: EmailAnalysisCar
       setResult(analysisResult);
 
       const risk = analysisResult.riskLevel.toLowerCase();
-      if (risk === 'medium' || risk === 'high') {
+      if (risk === 'medium' || risk === 'high' || risk === 'critical') {
         onNewIncident({
           agent: 'Email',
-          riskLevel: analysisResult.riskLevel as IncidentRiskLevel,
+          riskLevel: analysisResult.riskLevel.toLowerCase() as IncidentRiskLevel,
           finding: 'Phishing attempt detected',
-          details: analysisResult,
+          details: { emailContent: values.emailContent, ...analysisResult },
         });
       }
     } catch (error) {
