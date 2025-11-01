@@ -7,7 +7,7 @@ import { z } from "zod";
 import { AlertTriangle, ShieldCheck, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import type { Incident, IncidentRiskLevel } from "@/lib/types";
 import { analyzeEmailForPhishing, type AnalyzeEmailForPhishingOutput } from "@/ai/flows/analyze-email-for-phishing";
@@ -42,7 +42,8 @@ export function EmailAnalysisCard({ onNewIncident, className }: EmailAnalysisCar
       const analysisResult = await analyzeEmailForPhishing({ emailContent: values.emailContent });
       setResult(analysisResult);
 
-      if (analysisResult.isPhishing) {
+      const risk = analysisResult.riskLevel.toLowerCase();
+      if (risk === 'medium' || risk === 'high' || risk === 'critical') {
         onNewIncident({
           agent: 'Email',
           riskLevel: analysisResult.riskLevel as IncidentRiskLevel,

@@ -43,7 +43,8 @@ export function UrlRiskCard({ onNewIncident, className }: UrlRiskCardProps) {
       const analysisResult = await assessUrlRisk({ url: values.url });
       setResult(analysisResult);
 
-      if (analysisResult.riskLevel.toLowerCase() !== 'low' && analysisResult.riskLevel.toLowerCase() !== 'info') {
+      const risk = analysisResult.riskLevel.toLowerCase();
+      if (risk === 'medium' || risk === 'high' || risk === 'critical') {
         onNewIncident({
           agent: 'URL',
           riskLevel: analysisResult.riskLevel.toLowerCase() as IncidentRiskLevel,
