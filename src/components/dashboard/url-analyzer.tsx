@@ -16,6 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, ShieldCheck, Info, Bot } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import React from "react";
 
 const formSchema = z.object({
   url: z.string().url("Please enter a valid URL."),
@@ -38,7 +39,7 @@ export function UrlAnalyzer() {
     setIsLoading(true);
     setResult(null);
     try {
-      const analysisResult = await assessUrlRiskAction(values);
+      const analysisResult = await assessUrlRiskAction({ url: values.url.trim() });
       setResult(analysisResult);
 
       const severityMap: Record<string, ThreatSeverity> = {
