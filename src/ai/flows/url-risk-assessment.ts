@@ -40,7 +40,7 @@ const blockUrlTool = ai.defineTool(
 
 export async function assessUrlRisk(input: AssessUrlRiskInput): Promise<AssessUrlRiskOutput> {
   const result = await assessUrlRiskFlow(input);
-  const toolRequest = result.toolRequest;
+  const toolRequest = result.toolRequest();
   let isBlocked = false;
 
   if (toolRequest?.name === 'blockUrl' && toolRequest.input.url) {
@@ -49,8 +49,8 @@ export async function assessUrlRisk(input: AssessUrlRiskInput): Promise<AssessUr
   }
   
   return {
-    riskLevel: result.output!.riskLevel,
-    reasoning: result.output!.reasoning,
+    riskLevel: result.output()!.riskLevel,
+    reasoning: result.output()!.reasoning,
     isBlocked: isBlocked
   };
 }
@@ -79,7 +79,7 @@ const assessUrlRiskFlow = ai.defineFlow(
   },
   async input => {
     const llmResponse = await ai.generate({
-        prompt: prompt.prompt!,
+        prompt: await prompt.render({input}),
         tools: [blockUrlTool],
         output: {
             schema: AssessUrlRiskOutputSchema,
