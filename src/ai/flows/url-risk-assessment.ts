@@ -40,17 +40,22 @@ const blockUrlTool = ai.defineTool(
 
 export async function assessUrlRisk(input: AssessUrlRiskInput): Promise<AssessUrlRiskOutput> {
   const result = await assessUrlRiskFlow(input);
-  const toolRequest = result.toolRequest();
   let isBlocked = false;
+
+  // Since we are now using the prompt directly, we get back a structured response with candidates.
+  // We need to check for tool calls within those candidates.
+  const toolRequest = result.candidates[0].toolRequests?.[0];
 
   if (toolRequest?.name === 'blockUrl' && toolRequest.input.url) {
     const toolResponse = await blockUrlTool(toolRequest.input);
     isBlocked = toolResponse.success;
   }
   
+  const output = result.candidates[0].message.part.json;
+  
   return {
-    riskLevel: result.output()!.riskLevel,
-    reasoning: result.output()!.reasoning,
+    riskLevel: output.riskLevel,
+    reasoning: output.reasoning,
     isBlocked: isBlocked
   };
 }
@@ -78,13 +83,11 @@ const assessUrlRiskFlow = ai.defineFlow(
     // We are not using the AssessUrlRiskOutputSchema here directly.
   },
   async input => {
-    const llmResponse = await ai.generate({
-        prompt: await prompt.render({input}),
-        tools: [blockUrlTool],
-        output: {
-            schema: AssessUrlRiskOutputSchema,
-        }
-    });
+    // By calling the prompt directly, we get a structured request that genkit understands.
+    const request = await prompt.render({input});
+
+    // We then pass this structured request to ai.generate().
+    const llmResponse = await ai.generate(request);
 
     return llmResponse;
   }
