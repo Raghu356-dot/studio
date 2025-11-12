@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, ShieldCheck, Info, Bot } from "lucide-react";
+import { AlertTriangle, ShieldCheck, Info, Bot, Ban } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import React from "react";
 
@@ -54,10 +54,19 @@ export function UrlAnalyzer() {
         severity: severityMap[analysisResult.riskLevel] || "Medium",
         details: analysisResult,
       });
-      toast({
-        title: "Analysis Complete",
-        description: "URL risk assessment has finished.",
-      });
+
+      if (analysisResult.isBlocked) {
+        toast({
+            title: "URL Blocked",
+            description: "The high-risk URL was automatically added to the blocklist.",
+        });
+      } else {
+        toast({
+            title: "Analysis Complete",
+            description: "URL risk assessment has finished.",
+        });
+      }
+
     } catch (error) {
       console.error(error);
       toast({
@@ -123,9 +132,17 @@ export function UrlAnalyzer() {
                 {React.createElement(riskLevelStyles[result.riskLevel].icon, { className: `h-6 w-6 ${riskLevelStyles[result.riskLevel].color}` })}
                 <div className="text-lg font-semibold flex items-center gap-2">Risk Level: <Badge variant={result.riskLevel === 'HIGH' ? 'destructive' : 'secondary'}>{result.riskLevel}</Badge></div>
               </div>
-              <div className="space-y-1">
-                <h4 className="font-semibold">Reasoning</h4>
-                <p className="text-sm text-muted-foreground">{result.reasoning}</p>
+              <div className="space-y-2">
+                <div className="space-y-1">
+                  <h4 className="font-semibold">Reasoning</h4>
+                  <p className="text-sm text-muted-foreground">{result.reasoning}</p>
+                </div>
+                {result.isBlocked && (
+                    <div className="flex items-center gap-2 p-3 rounded-md bg-destructive/10 text-destructive-foreground">
+                        <Ban className="h-5 w-5 text-destructive" />
+                        <span className="text-sm font-medium">This URL was automatically added to the blocklist.</span>
+                    </div>
+                )}
               </div>
             </div>
           )}
