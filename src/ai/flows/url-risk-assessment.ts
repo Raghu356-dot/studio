@@ -22,7 +22,6 @@ const AssessUrlRiskOutputSchema = z.object({
     .enum(['LOW', 'MEDIUM', 'HIGH'])
     .describe('The risk level of the URL.'),
   reasoning: z.string().describe('The reasoning behind the risk assessment.'),
-  isBlocked: z.boolean().describe('Whether the URL was automatically added to the blocklist.')
 });
 export type AssessUrlRiskOutput = z.infer<typeof AssessUrlRiskOutputSchema>;
 
@@ -38,24 +37,23 @@ const blockUrlTool = ai.defineTool(
     }
 )
 
-export async function assessUrlRisk(input: AssessUrlRiskInput): Promise<AssessUrlRiskOutput> {
+export async function assessUrlRisk(input: AssessUrlRiskInput): Promise<AssessUrlRiskOutput & { isBlocked: boolean }> {
   const result = await assessUrlRiskFlow(input);
   let isBlocked = false;
 
-  // Since we are now using the prompt directly, we get back a structured response with candidates.
-  // We need to check for tool calls within those candidates.
-  const toolRequest = result.candidates[0].toolRequests?.[0];
+  // The model's response might contain a request to use a tool.
+  const toolRequest = result.toolRequest;
 
   if (toolRequest?.name === 'blockUrl' && toolRequest.input.url) {
     const toolResponse = await blockUrlTool(toolRequest.input);
     isBlocked = toolResponse.success;
   }
   
-  const output = result.candidates[0].message.part.json;
+  // The structured JSON output is in result.output
+  const output = result.output as AssessUrlRiskOutput;
   
   return {
-    riskLevel: output.riskLevel,
-    reasoning: output.reasoning,
+    ...output,
     isBlocked: isBlocked
   };
 }
@@ -79,16 +77,12 @@ const assessUrlRiskFlow = ai.defineFlow(
   {
     name: 'assessUrlRiskFlow',
     inputSchema: AssessUrlRiskInputSchema,
-    // Note: The output is now the raw model response, which might include tool requests.
-    // We are not using the AssessUrlRiskOutputSchema here directly.
+    outputSchema: AssessUrlRiskOutputSchema,
   },
   async input => {
-    // By calling the prompt directly, we get a structured request that genkit understands.
-    const request = await prompt.render({input});
-
-    // We then pass this structured request to ai.generate().
-    const llmResponse = await ai.generate(request);
-
-    return llmResponse;
+    // By calling the prompt directly, we get a fully structured response that includes
+    // both the model's text/json output and any tool requests it made.
+    const result = await prompt(input);
+    return result;
   }
 );
