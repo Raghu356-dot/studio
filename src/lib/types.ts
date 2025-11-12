@@ -2,6 +2,7 @@ import type { EmailAnalysisOutput } from "@/ai/flows/email-analysis-flow";
 import type { AssessUrlRiskOutput } from "@/ai/flows/url-risk-assessment";
 import type { AnalyzeTransactionOutput } from "@/ai/flows/fraud-pattern-analysis";
 import type { IncidentCorrelationOutput } from "@/ai/flows/incident-correlation-and-alerting";
+import type { MalwareAnalysisOutput } from "@/ai/flows/malware-analysis-flow";
 
 export type ThreatAgent = "Email" | "URL" | "Malware" | "Fraud";
 export type ThreatSeverity = "Low" | "Medium" | "High" | "Critical";
@@ -15,18 +16,15 @@ export type Threat = {
   details: any;
 };
 
-export type MalwareAnalysisOutput = {
-  isMalicious: boolean;
-  confidence: number;
+export type MalwareAnalysisResult = MalwareAnalysisOutput & {
   fileName: string;
   fileSize: number;
-  threatType?: string;
 };
 
 export type AnalysisResult =
   | (EmailAnalysisOutput & { agent: "Email" })
   | (AssessUrlRiskOutput & { agent: "URL" })
-  | (MalwareAnalysisOutput & { agent: "Malware" })
+  | (MalwareAnalysisResult & { agent: "Malware" })
   | (AnalyzeTransactionOutput & { agent: "Fraud" });
 
 export type IncidentCorrelationResult = IncidentCorrelationOutput;

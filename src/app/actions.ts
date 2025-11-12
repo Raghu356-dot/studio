@@ -4,6 +4,7 @@ import { analyzeEmail, type EmailAnalysisInput } from "@/ai/flows/email-analysis
 import { assessUrlRisk, type AssessUrlRiskInput } from "@/ai/flows/url-risk-assessment";
 import { analyzeTransaction, type AnalyzeTransactionInput } from "@/ai/flows/fraud-pattern-analysis";
 import { correlateIncidentsAndAlert, type IncidentCorrelationInput } from "@/ai/flows/incident-correlation-and-alerting";
+import { analyzeFile, type MalwareAnalysisInput } from "@/ai/flows/malware-analysis-flow";
 
 export async function analyzeEmailAction(input: EmailAnalysisInput) {
   return await analyzeEmail(input);
@@ -19,4 +20,8 @@ export async function analyzeTransactionAction(input: AnalyzeTransactionInput) {
 
 export async function correlateIncidentsAction(input: IncidentCorrelationInput) {
   return await correlateIncidentsAndAlert(input);
+}
+
+export async function analyzeFileAction(input: MalwareAnalysisInput) {
+    return await analyzeFile(input);
 }
