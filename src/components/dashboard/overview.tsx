@@ -62,90 +62,26 @@ function ThreatListItem({ threat }: { threat: Threat }) {
 }
 
 export function Overview() {
-  const { threats, clearThreats } = useThreats();
-  const [correlationResult, setCorrelationResult] = useState<IncidentCorrelationResult | null>(null);
-  const [isCorrelating, setIsCorrelating] = useState(false);
-
+  const { threats } = useThreats();
   const highSeverityThreats = threats.filter(t => t.severity === 'High' || t.severity === 'Critical').length;
-
-  const handleCorrelate = async () => {
-    setIsCorrelating(true);
-    setCorrelationResult(null);
-    try {
-      const findings = {
-        emailAnalysis: threats.filter(t => t.agent === 'Email').map(t => JSON.stringify(t.details)).join('\n\n'),
-        urlRiskAssessment: threats.filter(t => t.agent === 'URL').map(t => JSON.stringify(t.details)).join('\n\n'),
-        malwareDetection: threats.filter(t => t.agent === 'Malware').map(t => JSON.stringify(t.details)).join('\n\n'),
-        fraudPatternAnalysis: threats.filter(t => t.agent === 'Fraud').map(t => JSON.stringify(t.details)).join('\n\n'),
-      };
-      const result = await correlateIncidentsAction(findings);
-      setCorrelationResult(result);
-    } finally {
-      setIsCorrelating(false);
-    }
-  };
-
+  
   return (
-    <div className="grid gap-8">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Total Detections" value={threats.length} icon={BarChart} />
-        <StatCard title="High Severity" value={highSeverityThreats} icon={ShieldAlert} />
-        <StatCard title="Incidents" value={correlationResult?.isIncident ? '1' : '0'} icon={FileWarning} />
-        <StatCard title="System Status" value="Secure" icon={ShieldCheck} />
-      </div>
-
-      <div className="grid gap-8 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Real-time Threat Feed</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {threats.length > 0 ? (
-              <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
-                {threats.map(threat => <ThreatListItem key={threat.id} threat={threat} />)}
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>No threats detected yet.</p>
-                <p className="text-sm">Use the agent tabs to start an analysis.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Incident Correlation Agent</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <p className="text-sm text-muted-foreground">
-              The correlation agent analyzes findings from all other agents to identify coordinated attacks and assess overall risk.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2">
-                <Button onClick={handleCorrelate} disabled={isCorrelating || threats.length === 0} className="w-full">
-                <Bot className="mr-2" />
-                {isCorrelating ? 'Correlating...' : 'Correlate Incidents'}
-                </Button>
-                <Button variant="outline" onClick={clearThreats} disabled={threats.length === 0} className="w-full">Clear Feed</Button>
-            </div>
-            
-            {isCorrelating && <p className="text-center text-sm text-muted-foreground">Agent is thinking...</p>}
-
-            {correlationResult && (
-              <div className="mt-4 p-4 rounded-lg bg-secondary animate-in fade-in">
-                <h4 className="font-semibold">Correlation Report</h4>
-                <Separator className="my-2" />
-                <p><strong>Incident Detected:</strong> {correlationResult.isIncident ? 'Yes' : 'No'}</p>
-                <p><strong>Severity:</strong> <Badge variant="destructive">{correlationResult.severity}</Badge></p>
-                <p className="mt-2"><strong>Summary:</strong></p>
-                <p className="text-sm text-muted-foreground">{correlationResult.summary}</p>
-                <p className="mt-2"><strong>Recommendations:</strong></p>
-                <p className="text-sm text-muted-foreground">{correlationResult.recommendations}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Real-time Threat Feed</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {threats.length > 0 ? (
+          <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+            {threats.map(threat => <ThreatListItem key={threat.id} threat={threat} />)}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-muted-foreground">
+            <p>No threats detected yet.</p>
+            <p className="text-sm">Use the agent tabs to start an analysis.</p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
