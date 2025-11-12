@@ -8,7 +8,7 @@ export default function Home() {
         <div className="flex items-center gap-2">
           <AppLogo className="h-8 w-8 text-primary" />
           <h1 className="text-xl md:text-2xl font-bold font-headline">
-            
+            Analysis Tools
           </h1>
         </div>
       </header>

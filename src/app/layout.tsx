@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: '',
+  title: 'Analysis Tools',
   description: 'An intelligent system to detect, analyze, and respond to cybersecurity threats.',
 };
 
