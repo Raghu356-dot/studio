@@ -5,9 +5,8 @@ import { useThreats } from "@/context/threat-context";
 import type { IncidentCorrelationOutput } from "@/ai/flows/incident-correlation-and-alerting";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, ShieldAlert, CheckCircle, BarChart, AlertTriangle, ShieldCheck, FileWarning, Bot, Combine } from "lucide-react";
+import { Bot, Combine } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { formatDistanceToNow } from "date-fns";
 import { correlateIncidentsAction } from "@/app/actions";
 import { Separator } from "@/components/ui/separator";
 
@@ -64,7 +63,7 @@ export function IncidentCorrelator() {
             <h4 className="font-semibold">Correlation Report</h4>
             <Separator className="my-2" />
             <p><strong>Incident Detected:</strong> {correlationResult.isIncident ? 'Yes' : 'No'}</p>
-            <p><strong>Severity:</strong> <Badge variant={correlationResult.severity === 'high' || correlationResult.severity === 'critical' ? 'destructive' : 'secondary'}>{correlationResult.severity}</Badge></p>
+            <div className="flex items-center gap-2"><strong>Severity:</strong> <Badge variant={correlationResult.severity === 'high' || correlationResult.severity === 'critical' ? 'destructive' : 'secondary'}>{correlationResult.severity}</Badge></div>
             <p className="mt-2"><strong>Summary:</strong></p>
             <p className="text-sm text-muted-foreground">{correlationResult.summary}</p>
             <p className="mt-2"><strong>Recommendations:</strong></p>
