@@ -121,7 +121,7 @@ export function UrlAnalyzer() {
             <div className="w-full space-y-4 animate-in fade-in">
               <div className={`p-4 rounded-lg flex items-center gap-4 ${riskLevelStyles[result.riskLevel].bg} ${riskLevelStyles[result.riskLevel].border}`}>
                 {React.createElement(riskLevelStyles[result.riskLevel].icon, { className: `h-6 w-6 ${riskLevelStyles[result.riskLevel].color}` })}
-                <h3 className="text-lg font-semibold">Risk Level: <Badge variant={result.riskLevel === 'HIGH' ? 'destructive' : 'secondary'}>{result.riskLevel}</Badge></h3>
+                <div className="text-lg font-semibold flex items-center gap-2">Risk Level: <Badge variant={result.riskLevel === 'HIGH' ? 'destructive' : 'secondary'}>{result.riskLevel}</Badge></div>
               </div>
               <div className="space-y-1">
                 <h4 className="font-semibold">Reasoning</h4>

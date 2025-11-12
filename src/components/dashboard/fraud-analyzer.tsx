@@ -145,7 +145,7 @@ export function FraudAnalyzer() {
                 <h3 className="text-lg font-semibold">{result.isFraudulent ? 'Potential Fraud Detected' : 'Transaction Appears Normal'}</h3>
               </div>
               <div className="space-y-2">
-                <p><strong>Fraudulent:</strong> <Badge variant={result.isFraudulent ? 'destructive' : 'secondary'}>{result.isFraudulent ? 'Yes' : 'No'}</Badge></p>
+                <div className="flex items-center gap-2"><strong>Fraudulent:</strong> <Badge variant={result.isFraudulent ? 'destructive' : 'secondary'}>{result.isFraudulent ? 'Yes' : 'No'}</Badge></div>
                 <div>
                   <p><strong>Confidence Score:</strong> {Math.round(result.confidenceScore * 100)}%</p>
                   <Progress value={result.confidenceScore * 100} className="w-full h-2 mt-1" />

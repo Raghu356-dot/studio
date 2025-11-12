@@ -110,7 +110,7 @@ export function EmailAnalyzer() {
           {isLoading && <p className="text-muted-foreground">Agent is analyzing the email...</p>}
           {result && (
             <div className="w-full space-y-4 animate-in fade-in">
-              <div className={`p-4 rounded-lg flex items-center gap-4 ${result.isPhishing || result.isScam ? 'bg-destructive/10 border border-destructive/20' : 'bg-green-500/10 border border-green-500/20'}`}>
+              <div className={`p-4 rounded-lg flex items-center gap-4 ${result.isPhishing || result.isScam ? 'bg-destructive/10 border-destructive/20' : 'bg-green-500/10 border-green-500/20'}`}>
                 {result.isPhishing || result.isScam ? <AlertTriangle className="h-6 w-6 text-destructive" /> : <ShieldCheck className="h-6 w-6 text-green-500" />}
                 <h3 className="text-lg font-semibold">{result.riskAssessment}</h3>
               </div>
