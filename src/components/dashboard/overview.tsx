@@ -1,29 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useThreats } from "@/context/threat-context";
-import type { Threat, IncidentCorrelationResult } from "@/lib/types";
+import type { Threat } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { AlertCircle, ShieldAlert, CheckCircle, BarChart, AlertTriangle, ShieldCheck, FileWarning, Bot } from "lucide-react";
+import { AlertCircle, ShieldAlert, CheckCircle, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "date-fns";
-import { correlateIncidentsAction } from "@/app/actions";
 import { Separator } from "@/components/ui/separator";
-
-function StatCard({ title, value, icon: Icon }: { title: string, value: string | number, icon: React.ElementType }) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
-      </CardContent>
-    </Card>
-  );
-}
 
 function ThreatListItem({ threat }: { threat: Threat }) {
   const severityIcons = {
@@ -63,7 +46,6 @@ function ThreatListItem({ threat }: { threat: Threat }) {
 
 export function Overview() {
   const { threats } = useThreats();
-  const highSeverityThreats = threats.filter(t => t.severity === 'High' || t.severity === 'Critical').length;
   
   return (
     <Card>
@@ -72,7 +54,7 @@ export function Overview() {
       </CardHeader>
       <CardContent>
         {threats.length > 0 ? (
-          <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+          <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
             {threats.map(threat => <ThreatListItem key={threat.id} threat={threat} />)}
           </div>
         ) : (
