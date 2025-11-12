@@ -80,7 +80,6 @@ const assessUrlRiskFlow = ai.defineFlow(
   async input => {
     const llmResponse = await ai.generate({
         prompt: prompt.prompt!,
-        model: ai.registry.getModel('googleai/gemini-2.5-flash')!,
         tools: [blockUrlTool],
         output: {
             schema: AssessUrlRiskOutputSchema,
