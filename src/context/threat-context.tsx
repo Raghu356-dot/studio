@@ -1,7 +1,9 @@
-"use client";
+'use client';
 
-import type { Threat, ThreatAgent, ThreatSeverity } from "@/lib/types";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import type { Threat } from "@/lib/types";
+import { createContext, useContext, useState, type ReactNode, useEffect } from "react";
+import { useFirestore } from "@/firebase/provider";
+import { addDoc, collection, serverTimestamp, query, orderBy, onSnapshot } from "firebase/firestore";
 
 type ThreatContextType = {
   threats: Threat[];
@@ -12,19 +14,43 @@ type ThreatContextType = {
 const ThreatContext = createContext<ThreatContextType | undefined>(undefined);
 
 export function ThreatProvider({ children }: { children: ReactNode }) {
+  const firestore = useFirestore();
   const [threats, setThreats] = useState<Threat[]>([]);
 
-  const addThreat = (threat: Omit<Threat, "id" | "timestamp">) => {
-    const newThreat: Threat = {
+  useEffect(() => {
+    if (!firestore) return;
+
+    const threatsCollection = collection(firestore, 'threats');
+    const threatsQuery = query(threatsCollection, orderBy('timestamp', 'desc'));
+
+    const unsubscribe = onSnapshot(threatsQuery, (snapshot) => {
+      const newThreats = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }) as Threat);
+      setThreats(newThreats);
+    });
+
+    return () => unsubscribe();
+  }, [firestore]);
+
+
+  const addThreat = async (threat: Omit<Threat, "id" | "timestamp">) => {
+    if (!firestore) return;
+    const newThreat = {
       ...threat,
-      id: crypto.randomUUID(),
-      timestamp: new Date(),
+      timestamp: serverTimestamp(),
     };
-    setThreats((prevThreats) => [newThreat, ...prevThreats]);
+    try {
+      await addDoc(collection(firestore, 'threats'), newThreat);
+    } catch (error) {
+      console.error("Error adding threat to Firestore: ", error);
+    }
   };
 
   const clearThreats = () => {
+    // This should be handled with care in a real application.
+    // For now, it just clears local state. A real implementation
+    // would need to delete documents from Firestore.
     setThreats([]);
+    console.warn("clearThreats only clears local state. Implement Firestore deletion if needed.");
   };
 
   return (
